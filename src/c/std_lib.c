@@ -10,7 +10,8 @@ int mod(int a, int n){
 }
 
 void memcpy(byte *dest, byte *src, unsigned int n){
-    for(int i=0; i<n; i++){
+    int i;
+    for(i=0; i<n; i++){
         dest[i] = src[i];
     }
 }
@@ -24,11 +25,12 @@ unsigned int strlen(char *string){
 }
 
 bool strcmp(char *s1, char *s2){
+    int i;
     if (strlen(s1) != strlen(s2)){
         return false;
     }
 
-    for(int i=0; i<strlen(s1); i++){
+    for(i=0; i<strlen(s1); i++){
         if (s1[i] != s2[i]){
             return false;
         }
@@ -37,13 +39,15 @@ bool strcmp(char *s1, char *s2){
 }
 
 void strcpy(char *dst, char *src){
-    for(int i=0; i<strlen(src); i++){
+    int i;
+    for(i=0; i<strlen(src); i++){
         dst[i] = src[i];
     }
 }
 
 void clear(byte *ptr, unsigned int n){
-    for(int i=0; i<n; i++){
+    int i;
+    for(i=0; i<n; i++){
         ptr[i] = 0;
     }
 }
