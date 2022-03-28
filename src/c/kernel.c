@@ -11,6 +11,7 @@ int main() {
     char *string = "Haihaihai"; // Deklarasikan variabel pada awal scope
     int i = 0;
 
+    fillKernelMap();
     for (i = 0; i < 9; i++) {
         byte warna = 0xD;
         putInMemory(0xB000, 0x8000 + 2*i, string[i]);
@@ -43,6 +44,24 @@ void handleInterrupt21(int AX, int BX, int CX, int DX) {
         default:
             printString("Invalid Interrupt");
     }
+}
+
+void fillKernelMap() {
+    struct map_filesystem map_fs_buffer;
+    int i;
+
+    // Load filesystem map
+    readSector(&map_fs_buffer, FS_MAP_SECTOR_NUMBER);
+
+    for(i=0;i<=15;i++) {
+        map_fs_buffer.is_filled[i] = true;
+    }
+    for(i=256;i<=511;i++) {
+        map_fs_buffer.is_filled[i] = true;
+    }
+
+    // Update filesystem map
+    writeSector(&map_fs_buffer, FS_MAP_SECTOR_NUMBER);
 }
 
 void clearScreen() {
@@ -104,4 +123,32 @@ void readString(char *string) {
             count++;
         }
     }
+}
+
+void readSector(byte *buffer, int sector_number) {
+    int sector_read_count = 0x01;
+    int cylinder, sector;
+    int head, drive;
+
+    cylinder = div(sector_number, 36) << 8; // CH
+    sector = mod(sector_number, 18) + 1; // CL
+
+    head = mod(div(sector_number, 18), 2) << 8; // DH
+    drive = 0x00; // DL
+
+    interrupt(0x13, 0x0200 | sector_read_count, buffer, cylinder | sector, head | drive);
+}
+
+void writeSector(byte* buffer, int sector_number) {
+    int sector_write_count = 0x01;
+    int cylinder, sector;
+    int head, drive;
+
+    cylinder = div(sector_number, 36) << 8; // CH
+    sector = mod(sector_number, 18) + 1; // CL
+
+    head = mod(div(sector_number, 18), 2) << 8; // DH
+    drive = 0x00; // DL
+
+    interrupt(0x13, 0x0300 | sector_write_count, buffer, cylinder | sector, head | drive);
 }
