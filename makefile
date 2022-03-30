@@ -26,7 +26,7 @@ shell:
 	bcc -ansi -c -o out/shell.o src/c/shell/shell.c
 
 run:
-	bochs -f src/config/if2230.config
+	echo "c" | bochs -f src/config/if2230.config
 
 build-run: all run
 
