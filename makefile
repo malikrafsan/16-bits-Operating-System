@@ -1,5 +1,5 @@
 # Makefile
-all: diskimage bootloader stdlib kernel
+all: diskimage bootloader shell stdlib kernel
 
 # Recipes
 diskimage: bootloader kernel
@@ -12,15 +12,18 @@ bootloader:
 	# TODO : Tambahkan untuk pembuatan bootloader
 	nasm src/asm/bootloader.asm -o out/bootloader
 
-kernel: stdlib
+kernel: shell stdlib
 	# TODO : Tambahkan untuk pembuatan kernel
 	bcc -ansi -c -o out/kernel.o src/c/kernel.c
 	nasm -f as86 src/asm/kernel.asm -o out/kernel_asm.o
-	ld86 -o out/kernel -d out/kernel.o out/kernel_asm.o out/std_lib.o
+	ld86 -o out/kernel -d out/kernel.o out/kernel_asm.o out/std_lib.o out/shell.o
 
 stdlib:
 	# Opsional
 	bcc -ansi -c -o out/std_lib.o src/c/std_lib.c
+
+shell:
+	bcc -ansi -c -o out/shell.o src/c/shell/shell.c
 
 run:
 	bochs -f src/config/if2230.config

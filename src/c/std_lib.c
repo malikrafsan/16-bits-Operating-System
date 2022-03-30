@@ -51,3 +51,24 @@ void clear(byte *ptr, unsigned int n){
         ptr[i] = 0;
     }
 }
+
+int splitStr(char* str, char** res) {
+    int i=0;
+    int j=0;
+    int k=0;
+    while(str[i]!='\0'){
+        if(str[i]==' '){
+            res[j][k]='\0';
+            j++;
+            k=0;
+        }
+        else{
+            res[j][k]=str[i];
+            k++;
+        }
+        i++;
+    }
+    res[j][k]='\0';
+    
+    return j+1;
+}

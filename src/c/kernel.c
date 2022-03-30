@@ -4,32 +4,13 @@
 
 // TODO : Tambahkan implementasi kode C
 
+#include "header/shell.h"
 #include "header/kernel.h"
 
 int main() {
-    char *str_input;
-    char *string = "Haihaihai"; // Deklarasikan variabel pada awal scope
-    int i = 0;
-
     fillKernelMap();
-    for (i = 0; i < 9; i++) {
-        byte warna = 0xD;
-        putInMemory(0xB000, 0x8000 + 2*i, string[i]);
-        putInMemory(0xB000, 0x8001 + 2*i, warna);
-    }
-
-    handleInterrupt21(0x0, "Tugas Besar OS Thanos\n", 0, 0);
-    handleInterrupt21(0x0, "Input new string: ", 0, 0);
-    handleInterrupt21(0x1, str_input, 0, 0);
-    handleInterrupt21(0x0, "print inputted string: ", 0, 0);
-    handleInterrupt21(0x0, str_input, 0, 0);
-    handleInterrupt21(0x0, "\nplease input anything before we clear screen\n", 0, 0);
-    handleInterrupt21(0x1, str_input, 0, 0);
-
-    clearScreen();
-
-    handleInterrupt21(0x0, "screen has been clear up\n", 0, 0);
-
+    shell();
+    
     while (true);    
 }
 
