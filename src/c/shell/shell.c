@@ -35,8 +35,8 @@ void ls(byte curDir) {
   char name[14];
   int i, j, idxName, count;
 
-  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
-  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  handleInterrupt21(0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  handleInterrupt21(0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
   count = 0;
   for (i = 0; i< 64; i++) {
