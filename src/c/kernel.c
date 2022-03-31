@@ -22,6 +22,14 @@ void handleInterrupt21(int AX, int BX, int CX, int DX) {
         case 0x1:
             readString(BX);
             break;
+        case 0x2:
+            readSector(BX, CX);
+        case 0x3:
+            writeSector(BX, CX);
+        case 0x4:
+            read(BX, CX);
+        case 0x5:
+            write(BX, CX);
         default:
             printString("Invalid Interrupt");
     }
@@ -200,6 +208,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
     int i, j, idx_node, idx_sector, empty_space;
     char sector_entry_buffer[16];
 
+    printString("WRITINGGGG\n");
     // Masukkan filesystem dari storage ke memori
     readSector(&(node_fs_buffer.nodes[0]), FS_NODE_SECTOR_NUMBER);
     readSector(&(node_fs_buffer.nodes[32]), FS_NODE_SECTOR_NUMBER+1);
