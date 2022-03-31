@@ -39,10 +39,12 @@ bool strcmp(char *s1, char *s2){
 }
 
 void strcpy(char *dst, char *src){
-    int i;
-    for(i=0; i<strlen(src); i++){
+    int i = 0;
+    while (src[i] != '\0'){
         dst[i] = src[i];
+        i++;
     }
+    dst[i] = '\0';
 }
 
 void clear(byte *ptr, unsigned int n){
