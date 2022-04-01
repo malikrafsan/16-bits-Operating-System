@@ -15,7 +15,7 @@ void shell() {
   testWrite();
   while (1) {
     print("OSThanos:");
-    print("/<path>"); // path
+    cwd(current_dir);
     print("$? ");
     input(input_buf);
 
@@ -28,9 +28,10 @@ void shell() {
       if (argc != 2) {
         print("cd command must have 1 argument\n");
       } else {
-        print("cd to ");
-        print(args[1]);
-        print("\n");
+        cd(&current_dir, args[1]);
+        // print("cd to ");
+        // print(args[1]);
+        // print("\n");
       }
     } else if (strcmp(args[0], "mkdir")) {
       if (argc != 2) {

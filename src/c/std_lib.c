@@ -47,6 +47,25 @@ void strcpy(char *dst, char *src){
     dst[i] = '\0';
 }
 
+void bounded_strcpy(char *dst, char *src, int bound) {
+    int i = 0;
+    while (src[i] != '\0' && i < bound) {
+        dst[i] = src[i];
+        i++;
+    }
+    dst[i] = '\0';
+}
+
+void strcat(char*dst, char *src) {
+    int i, j;
+
+    for (i = 0; dst[i] != '\0'; i++);
+    for (j = 0; src[j] != '\0'; j++) {
+        dst[i + j] = src[j];
+    }
+    dst[i + j] = '\0';
+}
+
 void clear(byte *ptr, unsigned int n){
     int i;
     for(i=0; i<n; i++){

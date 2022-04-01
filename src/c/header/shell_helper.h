@@ -16,4 +16,6 @@ void print_fs_retcode(enum fs_retcode return_code);
 
 void testWrite();
 
+void cwd(byte cur_dir);
+
 #endif

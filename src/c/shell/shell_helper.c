@@ -78,3 +78,30 @@ void testWrite() {
   print_fs_retcode(return_code);
   print("\n");
 }
+
+void cwd(byte cur_dir) {
+  char buffer[1024];
+  char* temp = "/";
+  char* cur_name = "";
+
+  if (cur_dir == FS_NODE_P_IDX_ROOT) {
+    print("/");
+  }
+
+  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+
+  while (1) {
+    if (cur_dir == FS_NODE_P_IDX_ROOT) {
+      break;
+    }
+
+    bounded_strcpy(temp + 1, cur_dir + 2, 14);
+    strcat(cur_name, temp);
+    cur_dir = buffer[cur_dir];
+    temp = "/";
+    break;
+  }
+
+  print(cur_name);
+}
