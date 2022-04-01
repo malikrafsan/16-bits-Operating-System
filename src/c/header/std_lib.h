@@ -1,3 +1,6 @@
+#ifndef __STD_LIB__
+#define __STD_LIB__
+
 #include "std_type.h"
 
 // Operator matematika umum
@@ -6,7 +9,6 @@
 int div(int a, int b);
 
 int mod(int a, int n);
-
 
 // Operasi standar bahasa C
 // Implementasikan
@@ -26,3 +28,5 @@ void clear(byte *ptr, unsigned int n);
 // Mengosongkan byte array yang memiliki panjang n
 
 int splitStr(char* str, char** res);
+
+#endif /* __STD_LIB__ */

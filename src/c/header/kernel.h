@@ -1,5 +1,8 @@
 // Kernel header
 
+#ifndef __KERNEL__
+#define __KERNEL__
+
 #include "std_type.h"
 #include "std_lib.h"
 #include "filesystem.h"
@@ -24,3 +27,5 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code);
 void read(struct file_metadata *metadata, enum fs_retcode *return_code);
 
 void shell();
+
+#endif /* __KERNEL__ */
