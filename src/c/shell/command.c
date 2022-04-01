@@ -2,7 +2,7 @@
 
 void ls(byte curDir) {
   char buffer[1024];
-  char name[14];
+  char* name;
   int i, j, idxName, count;
 
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
@@ -19,13 +19,9 @@ void ls(byte curDir) {
 
       j = 0;
       idxName = i * 16 + 2;
-      while (j < 14 && buffer[idxName + j] != '\0') {
-        name[j] = buffer[idxName + j];
-        j++;
-      }
+      strcpy(name, buffer + idxName);
       print(name);
-      print("\r\n\0");
-      name[0] = '\0';
+      print("\n");
       count++;
     }
   }
