@@ -79,9 +79,16 @@ void testWrite() {
   print("\n");
 }
 
+void clearStr(char* str) {
+  int i;
+  for (i = 0; str[i] != '\0'; i++) {
+    str[i] = '\0';
+  }
+}
+
 void cwd(byte cur_dir) {
   char buffer[1024];
-  char* temp = "/";
+  char temp[16];
   char* cur_name = "";
 
   if (cur_dir == FS_NODE_P_IDX_ROOT) {
@@ -97,17 +104,12 @@ void cwd(byte cur_dir) {
     }
 
     bounded_strcpy(temp + 1, &buffer[cur_dir + 2], 14);
-    // print("\n<cur_dir: ");
-    // print(&buffer[cur_dir + 2]);
-    // print(">\n");
+    temp[0] = '/';
 
-    // print("\n<temp: ");
-    // print(temp);
-    // print(">\n");
     strcat(cur_name, temp);
     cur_dir = buffer[cur_dir];
-    temp = "/";
-    // break;
+    clearStr(temp);
   }
   print(cur_name);
+  clearStr(cur_name);
 }

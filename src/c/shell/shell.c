@@ -29,9 +29,6 @@ void shell() {
         print("cd command must have 1 argument\n");
       } else {
         cd(&current_dir, args[1]);
-        // print("cd to ");
-        // print(args[1]);
-        // print("\n");
       }
     } else if (strcmp(args[0], "mkdir")) {
       if (argc != 2) {
