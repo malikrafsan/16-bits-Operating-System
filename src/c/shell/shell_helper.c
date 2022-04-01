@@ -96,12 +96,18 @@ void cwd(byte cur_dir) {
       break;
     }
 
-    bounded_strcpy(temp + 1, cur_dir + 2, 14);
+    bounded_strcpy(temp + 1, &buffer[cur_dir + 2], 14);
+    // print("\n<cur_dir: ");
+    // print(&buffer[cur_dir + 2]);
+    // print(">\n");
+
+    // print("\n<temp: ");
+    // print(temp);
+    // print(">\n");
     strcat(cur_name, temp);
     cur_dir = buffer[cur_dir];
     temp = "/";
-    break;
+    // break;
   }
-
   print(cur_name);
 }

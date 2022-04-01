@@ -2,14 +2,14 @@
 
 void ls(byte curDir) {
   char buffer[1024];
-  char* name;
+  char *name;
   int i, j, idxName, count;
 
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
   count = 0;
-  for (i = 0; i< 64; i++) {
+  for (i = 0; i < 64; i++) {
     if (buffer[i * 16] == curDir) {
       if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
         print("dir: ");
@@ -30,7 +30,7 @@ void ls(byte curDir) {
   }
 }
 
-void mkdir(byte cur_dir, char *name) {  
+void mkdir(byte cur_dir, char *name) {
   struct file_metadata metadata;
   enum fs_retcode return_code;
 
@@ -48,36 +48,36 @@ void mkdir(byte cur_dir, char *name) {
   print_fs_retcode(return_code);
 }
 
-void cd(byte* parent, char* path) {
+void cd(byte *parent, char *path) {
   char buffer[1024];
   int i;
   byte cur_dir;
   bool flag_temp;
+  char *str = "1234567890";
 
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
   cur_dir = *parent;
   if (strcmp(path, "..") == true) {
-    cur_dir = buffer[cur_dir];
+    *parent = buffer[cur_dir];
   } else {
     for (i = 0; i < 64; i++) {
-      if (buffer[i * 16] == cur_dir) {
-        if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
-          if (strcmp(buffer + i * 16 + 2, path) == true) {
-            flag_temp = true;
-            cur_dir = i;
-            break;
-          }
-        }
+      if (buffer[i * 16] == cur_dir &&
+          buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER &&
+          strcmp(buffer + i * 16 + 2, path) == true) {
+        // print("buffer[i * 16 + 2]: ");
+        // print(&buffer[i * 16 + 2]);
+        // print("\n");
+        flag_temp = true;
+        cur_dir = i * 16;
+        // print("curdir: ");
+        // print(&buffer[cur_dir + 2]);
+        // print("\n");
+        break;
       }
     }
-  }
-  if (flag_temp) {
     *parent = cur_dir;
-    print("FOUND\n");
-  } else {
-    print("NOT FOUND\n");
   }
 }
 
@@ -90,7 +90,8 @@ void cd(byte* parent, char* path) {
 
 //   for (i = 0; i < 64; i++) {
 //     if (buffer[i * 16] == *parent) {
-//       if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER && strcmp(buffer + i * 16 + 2, name) == 1) {
+//       if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER && strcmp(buffer + i *
+//       16 + 2, name) == 1) {
 //         printString("Directory found\n");
 //         *parent = i;
 //       }
