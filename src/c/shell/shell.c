@@ -36,9 +36,7 @@ void shell() {
       if (argc != 2) {
         print("mkdir command must have 1 argument\n");
       } else {
-        print("mkdir ");
-        print(args[1]);
-        print("\n");
+        mkdir(current_dir, args[1]);
       }
     } else if (strcmp(args[0], "ls")) {
       if (argc != 1) {

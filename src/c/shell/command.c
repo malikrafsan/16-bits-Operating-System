@@ -33,3 +33,21 @@ void ls(byte curDir) {
     print("Empty directory\n");
   }
 }
+
+void mkdir(byte cur_dir, char *name) {  
+  struct file_metadata metadata;
+  enum fs_retcode return_code;
+
+  if (strlen(name) > 14) {
+    print("Folder name too long\n");
+    return;
+  }
+
+  metadata.buffer = 0x00;
+  metadata.node_name = name;
+  metadata.parent_index = cur_dir;
+  metadata.filesize = 0;
+
+  interrupt(0x21, 0x5, &metadata, &return_code, 0);
+  print_fs_retcode(return_code);
+}

@@ -30,35 +30,35 @@ void printHeaderShell() {
 
 void print_fs_retcode(enum fs_retcode return_code) {
   switch (return_code) {
-  case -1:
-    print("unknown error\n");
+  case FS_UNKNOWN_ERROR:
+    print("Unknown error\n");
     break;
-  case 0:
-    print("success\n");
+  case FS_SUCCESS:
+    print("Success\n");
     break;
-  case 1:
-    print("node not found\n");
+  case FS_R_NODE_NOT_FOUND:
+    print("Node not found\n");
     break;
-  case 2:
-    print("type is folder\n");
+  case FS_R_TYPE_IS_FOLDER:
+    print("Type is folder\n");
     break;
-  case 3:
-    print("file already exist\n");
+  case FS_W_FILE_ALREADY_EXIST:
+    print("Already exist\n");
     break;
-  case 4:
-    print("not enough storage\n");
+  case FS_W_NOT_ENOUGH_STORAGE:
+    print("Not enough storage\n");
     break;
-  case 5:
-    print("maximum node entry\n");
+  case FS_W_MAXIMUM_NODE_ENTRY:
+    print("Maximum node entry\n");
     break;
-  case 6:
-    print("maximum sector entry\n");
+  case FS_W_MAXIMUM_SECTOR_ENTRY:
+    print("Maximum sector entry\n");
     break;
-  case 7:
-    print("invalid folder\n");
+  case FS_W_INVALID_FOLDER:
+    print("Invalid folder\n");
     break;
   default:
-    print("unknown error\n");
+    print("Unknown error\n");
     break;
   }
 }
@@ -67,10 +67,10 @@ void testWrite() {
   struct file_metadata metadata;
   enum fs_retcode return_code;
 
-  metadata.buffer = 0x00;
+  metadata.buffer = "ini isi dari test.txt";
   metadata.node_name = "test.txt";
   metadata.parent_index = FS_NODE_P_IDX_ROOT;
-  metadata.filesize = 0;
+  metadata.filesize = 512;
 
   print("----\n");
   interrupt(0x21, 0x5, &metadata, &return_code, 0);
