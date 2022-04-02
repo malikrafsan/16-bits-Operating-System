@@ -65,7 +65,8 @@ void cd(byte *parent, char *path) {
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  if (buffer[res * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
+  if (buffer[res * 16 + 1] == FS_NODE_S_IDX_FOLDER ||
+      res == FS_NODE_P_IDX_ROOT) {
     *parent = res;
   } else {
     print("Not a directory\n");
@@ -91,36 +92,76 @@ void cat(byte cur_dir, char *path) {
 
 void mv(byte cur_dir, char *path_src, char *path_dest) {
   char buffer[1024];
-  byte idx_src, idx_dest;
-  bool success_src, success_dest;
-
-  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
-  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  char **args;
+  char *parent_dest;
+  char *new_name;
+  int argc, i;
+  byte idx_src, idx_dest, idx_parent_dest;
+  bool success_src, success_dest, success_parent_dest, success_get_parent;
 
   idx_src = getIdxDirByPath(cur_dir, path_src, &success_src);
 
   if (!success_src) {
     print("There is no ");
     print(path_src);
-    print("directory\n");
+    print("\n");
     return;
   }
 
   idx_dest = getIdxDirByPath(cur_dir, path_dest, &success_dest);
 
-  if (!success_dest) {
-    print("There is no ");
+  if (success_dest) {
+    print("cancel beacuse ");
     print(path_dest);
-    print("directory\n");
+    print(" exist\n");
     return;
   }
 
-  if (buffer[idx_dest * 16 + 1] != FS_NODE_S_IDX_FOLDER) {
+  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+
+  if (buffer[idx_dest * 16 + 1] != FS_NODE_S_IDX_FOLDER &&
+      idx_dest != FS_NODE_P_IDX_ROOT) {
     print("Cannot move to file\n");
     return;
   }
 
-  buffer[idx_src * 16] = idx_dest;
+  success_get_parent = getParentPath(path_dest, parent_dest);
+
+  // print("3. path_dest: ");
+  // print(path_dest);
+  // print("\n");
+
+  if (!success_get_parent) {
+    idx_parent_dest = FS_NODE_P_IDX_ROOT;
+  } else {
+    idx_parent_dest = getIdxDirByPath(cur_dir, parent_dest, &success_parent_dest);
+
+    if (!success_parent_dest) {
+      print("Unknown error\n");
+      return;
+    }
+  }
+
+  // print("4. path_dest: ");
+  // print(path_dest);
+  // print("\n");
+
+  argc = splitStr(path_dest, args, '/');
+
+  strcpy(new_name, args[argc - 1]);
+
+  // print("new_name: ");
+  // print(new_name);
+  // print("\n");
+  for (i=0;i < 14 && new_name[i] != '\0';i++) {
+    buffer[idx_src * 16 + i + 2] = new_name[i];
+  }
+  for (;i < 14; i++) {
+    buffer[idx_src * 16 + i + 2] = '\0';
+  }
+
+  buffer[idx_src * 16] = idx_parent_dest;
 
   interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);

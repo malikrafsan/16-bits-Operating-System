@@ -179,6 +179,7 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
     // print(" -> ");
     if (strcmp(args[it], "..")) {
       cur_dir = buffer[cur_dir * 16];
+      *success = true;
     } else {
       for (i = 0; i < 64; i++) {
         if (buffer[i * 16] == cur_dir &&
@@ -204,3 +205,31 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
 
   return cur_dir;
 }
+
+bool getParentPath(char *child, char *parent) {
+  int idxLastSlash, i;
+
+  strcpy(parent, child);
+
+  idxLastSlash = -1;
+  for (i = 0; parent[i] != '\0' ; i++) {
+    if (parent[i] == '/') {
+      idxLastSlash = i;
+    }
+  }
+
+  if (idxLastSlash == -1) {
+    // parent = "/";
+    return false;
+  }
+
+  while (1) {
+    if (parent[idxLastSlash] == '\0') {
+      break;
+    }
+    parent[idxLastSlash] = '\0';
+  }
+
+  return true;
+}
+

@@ -26,4 +26,6 @@ void printHex(byte b);
 
 byte getIdxDirByPath(byte cur_dir, char* path, bool *success);
 
+bool getParentPath(char *child, char *parent);
+
 #endif
