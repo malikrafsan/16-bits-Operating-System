@@ -302,7 +302,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
             break;
         }
     }
-    if(i==16 && metadata->filesize > 0) {
+    if(i==32 && metadata->filesize > 0) {
         *return_code = FS_W_MAXIMUM_SECTOR_ENTRY;
         return;
     }
@@ -338,7 +338,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
             if (!map_fs_buffer.is_filled[i]) {
                 map_fs_buffer.is_filled[i] = 0x1;
                 sector_entry_buffer[j] = i;
-                writeSector(metadata->buffer[j*512], i);
+                writeSector(&(metadata->buffer[j*512]), i);
                 j++;
             }
             i++;
