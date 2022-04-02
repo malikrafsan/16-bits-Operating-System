@@ -1,5 +1,5 @@
 # Makefile
-all: diskimage bootloader shell stdlib kernel
+all: diskimage bootloader shell stdlib kernel test
 
 # Recipes
 diskimage: bootloader kernel
@@ -32,3 +32,6 @@ run:
 
 build-run: all run
 
+test:
+	gcc -o out/tc_gen tc_gen/tc_gen.c tc_gen/tc_lib
+	
