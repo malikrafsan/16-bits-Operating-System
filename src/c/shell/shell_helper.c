@@ -125,8 +125,7 @@ void cwd(byte cur_dir) {
 
 void printChar(char c) {
   char str[2];
-  
-  interrupt(0x10, 0xe*256 + c, 0, 0, 0);
+
   str[0] = c;
   str[1] = '\0';
   print(str);
@@ -143,4 +142,64 @@ void printHex(byte b) {
   temp = mod(b, 16);
   str[1] = temp > 9 ? temp + 55 : temp + 48;
   print(str);
+}
+
+byte getIdxByPath(byte cur_dir, char* path) {
+  char buffer[1024];
+  char** args;
+  int i, it, argc;
+
+  print("-");
+
+  if (path[0] == '/') {
+    cur_dir = FS_NODE_P_IDX_ROOT;
+    argc = splitStr(path + 1, args, '/');
+  } else {
+    argc = splitStr(path, args, '/');
+  }
+
+  print("-");
+
+  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+
+  print("-");
+
+  // for (it = 0; it < argc; it++) {
+  //   printHex(it);
+  //   print(". ");
+  //   print(args[it]);
+  //   print("\n");
+  // }
+  // print("\n");
+
+  for (it = 0; it < argc; it++) {
+    // print(args[it]);
+    // print(" -> ");
+    if (strcmp(args[it], "..")) {
+      cur_dir = buffer[cur_dir * 16];
+    } else {
+      for (i = 0; i < 64; i++) {
+        if (buffer[i * 16] == cur_dir &&
+            buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER &&
+            strcmp(buffer + i * 16 + 2, args[it])) {
+          // print("FOUND");
+          cur_dir = i;
+          break;
+        }
+      }
+    }
+    // print("<");
+    // print(args[it]);
+    // print(" : ");
+    // printHex(cur_dir);
+    // print(">\n");
+  }
+
+  for (it = 0; it < argc; it++) {
+    clearStr(args[it]);
+  }
+  clearStr(buffer);
+
+  return cur_dir;
 }

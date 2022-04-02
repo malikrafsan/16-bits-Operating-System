@@ -33,6 +33,6 @@ void strcat(char *dst, char *src);
 void clear(byte *ptr, unsigned int n);
 // Mengosongkan byte array yang memiliki panjang n
 
-int splitStr(char* str, char** res);
+int splitStr(char* str, char** res, char delimiter);
 
 #endif /* __STD_LIB__ */

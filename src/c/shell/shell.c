@@ -22,7 +22,7 @@ void shell() {
     print("$? ");
     input(input_buf);
 
-    argc = splitStr(input_buf, args);
+    argc = splitStr(input_buf, args, ' ');
 
     print("Your command is:\n");
     describeCmd(args, argc);
@@ -46,14 +46,14 @@ void shell() {
       } else {
         ls(current_dir);
       }
-    } else if(strcmp(args[0], "cat")){
+    } else if (strcmp(args[0], "cat")){
       if(argc != 2) {
         print("cat command must have 1 argument\n");
       } else {
         print("mulai cat\n");
         cat(current_dir,args[1]);
       }
-    }else {  
+    } else {  
       print("Unknown command\n");
     }
     print("\n");

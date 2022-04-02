@@ -24,4 +24,6 @@ void printChar(char c);
 
 void printHex(byte b);
 
+byte getIdxByPath(byte cur_dir, char* path);
+
 #endif

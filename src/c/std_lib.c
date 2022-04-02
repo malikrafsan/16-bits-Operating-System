@@ -1,4 +1,5 @@
 #include "header/std_lib.h"
+#include "header/shell.h"
 
 // Opsional : Tambahkan implementasi kode C
 int div(int a, int b){
@@ -73,12 +74,18 @@ void clear(byte *ptr, unsigned int n){
     }
 }
 
-int splitStr(char* str, char** res) {
+int splitStr(char* str, char** res, char delimiter) {
     int i=0;
     int j=0;
     int k=0;
+
+    print("splitStr\n");
+    print("src string: ");
+    print(str);
+    print(">\n");
     while(str[i]!='\0'){
-        if(str[i]==' '){
+        printChar(str[i]);
+        if(str[i]==delimiter){
             res[j][k]='\0';
             j++;
             k=0;
@@ -90,6 +97,7 @@ int splitStr(char* str, char** res) {
         i++;
     }
     res[j][k]='\0';
+    print("\n");
     
     return j+1;
 }
