@@ -125,3 +125,31 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 }
+
+void cp(byte current_dir, char* src, char* dst) {
+  struct file_metadata metadata;
+  enum fs_retcode return_code;
+  byte buftemp[16 * 512];
+  int i;
+
+  metadata.buffer = buftemp;
+  metadata.node_name = src;
+  metadata.parent_index = current_dir;
+
+  // Copy buffer from src to metadata.buffer
+  interrupt(0x21, 0x4, &metadata, &return_code, 0);
+
+  metadata.node_name = dst;
+  print("buffer: \n");
+  print(metadata.buffer);
+  print("\n");
+
+  // jika tidak ada, maka create file
+  interrupt(0x21, 0x5, &metadata, &return_code, 0);
+
+  // jika file sudah ada, maka hapus file yang ada, lalu create file baru
+  if (return_code == FS_W_FILE_ALREADY_EXIST) {
+    deleteFile(current_dir, dst);
+    interrupt(0x21, 0x5, &metadata, &return_code, 0);
+  }
+}

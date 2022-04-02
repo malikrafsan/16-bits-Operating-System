@@ -211,3 +211,48 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
 
   return cur_dir;
 }
+
+void deleteFile(byte cur_dir, char* filename) {
+  char sector_buffer[1024];
+  char node_buffer[512];
+  char map_buffer[512];
+  int i, j;
+  byte idx_node;
+
+  readSector(sector_buffer, FS_SECTOR_SECTOR_NUMBER);
+  readSector(node_buffer, FS_NODE_SECTOR_NUMBER);
+  readSector(node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
+  readSector(map_buffer, FS_MAP_SECTOR_NUMBER);
+
+  // cari index dari filename di node_buffer
+  for (i = 0; i < 64; i++) {
+    if (node_buffer[i * 16] == cur_dir && strcmp(node_buffer + i * 16 + 2, filename)) {
+      idx_node = i;
+      break;
+    }
+  }
+
+  print("idx_node: ");
+  printHex(idx_node);
+  print("\n");
+
+  // telusuri di sector_buffer dan hapus di map_buffer
+  for (i=0; i<16; i++) {
+    j = sector_buffer[idx_node * 16 + i];
+    if (j != 0) {
+      map_buffer[j] = 0;
+    }
+  }
+
+  // hapus node_buffer
+  node_buffer[idx_node * 16] = 0;
+  node_buffer[idx_node * 16 + 1] = 0;
+  for (i = 2; i < 16; i++) {
+    node_buffer[idx_node * 16 + i] = '\0';
+  }
+
+  writeSector(sector_buffer, FS_SECTOR_SECTOR_NUMBER);
+  writeSector(node_buffer, FS_NODE_SECTOR_NUMBER);
+  writeSector(node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
+  writeSector(map_buffer, FS_MAP_SECTOR_NUMBER);
+}

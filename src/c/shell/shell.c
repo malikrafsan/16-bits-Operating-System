@@ -59,6 +59,12 @@ void shell() {
       } else {
         mv(current_dir, args[1], args[2]);
       }
+    } else if (strcmp(args[0], "cp")) {
+      if (argc != 3) {
+        print("cp command must have 2 argument\n");
+      } else {
+        cp(current_dir, args[1], args[2]);
+      }
     } else {  
       print("Unknown command\n");
     }

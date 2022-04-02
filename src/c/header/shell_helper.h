@@ -26,4 +26,6 @@ void printHex(byte b);
 
 byte getIdxDirByPath(byte cur_dir, char* path, bool *success);
 
+void deleteFile(byte cur_dir, char* filename);
+
 #endif
