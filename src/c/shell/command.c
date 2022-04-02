@@ -88,3 +88,40 @@ void cat(byte cur_dir, char *path) {
   print("\n");
   print_fs_retcode(return_code);
 }
+
+void mv(byte cur_dir, char *path_src, char *path_dest) {
+  char buffer[1024];
+  byte idx_src, idx_dest;
+  bool success_src, success_dest;
+
+  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+
+  idx_src = getIdxDirByPath(cur_dir, path_src, &success_src);
+
+  if (!success_src) {
+    print("There is no ");
+    print(path_src);
+    print("directory\n");
+    return;
+  }
+
+  idx_dest = getIdxDirByPath(cur_dir, path_dest, &success_dest);
+
+  if (!success_dest) {
+    print("There is no ");
+    print(path_dest);
+    print("directory\n");
+    return;
+  }
+
+  if (buffer[idx_dest * 16 + 1] != FS_NODE_S_IDX_FOLDER) {
+    print("Cannot move to file\n");
+    return;
+  }
+
+  buffer[idx_src * 16] = idx_dest;
+
+  interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+}

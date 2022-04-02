@@ -53,6 +53,12 @@ void shell() {
         print("mulai cat\n");
         cat(current_dir,args[1]);
       }
+    } else if (strcmp(args[0], "mv")) {
+      if (argc != 3) {
+        print("mv command must have 2 argument\n");
+      } else {
+        mv(current_dir, args[1], args[2]);
+      }
     } else {  
       print("Unknown command\n");
     }
