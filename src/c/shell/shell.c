@@ -12,7 +12,7 @@ void shell() {
 
   clearScreen();
   printHeaderShell();
-  testWrite();
+  //testWrite();
   while (1) {
     print("OSThanos:");
     cwd(current_dir);
