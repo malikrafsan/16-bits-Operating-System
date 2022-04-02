@@ -248,7 +248,20 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
     // 3. Cek dan pastikan entry node pada indeks P adalah folder.
     //    Jika pada indeks tersebut adalah file atau entri kosong,
     //    Tuliskan retcode FS_W_INVALID_FOLDER dan keluar.
-    if(node_fs_buffer.nodes[metadata->parent_index].sector_entry_index == FS_NODE_S_IDX_FOLDER || strlen(node_fs_buffer.nodes[metadata->parent_index].name)==0) {
+    if(metadata->parent_index != FS_NODE_P_IDX_ROOT && 
+        (node_fs_buffer.nodes[metadata->parent_index].sector_entry_index != FS_NODE_S_IDX_FOLDER 
+        || strlen(metadata->node_name)==0)) {
+        
+        if (metadata->parent_index != FS_NODE_P_IDX_ROOT) {
+            printString("PARENT NOT ROOT\n");
+        }
+        if (node_fs_buffer.nodes[metadata->parent_index].sector_entry_index != FS_NODE_S_IDX_FOLDER) {
+            printString("PARENT NOT FOLDER\n");
+        }
+        if (strlen(metadata->node_name)==0) {
+            printString("NODE NAME EMPTY\n");
+        }
+
         *return_code = FS_W_INVALID_FOLDER;
         return;
     }
