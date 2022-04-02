@@ -148,6 +148,7 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
   char buffer[1024];
   char** args;
   int i, it, argc;
+  bool flag;
 
   print("-");
 
@@ -172,24 +173,30 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
   //   print("\n");
   // }
   // print("\n");
-
+  *success = true;
   for (it = 0; it < argc; it++) {
-    *success = false;
+    flag = false;
     // print(args[it]);
     // print(" -> ");
     if (strcmp(args[it], "..")) {
-      cur_dir = buffer[cur_dir * 16];
+      if(cur_dir != FS_NODE_P_IDX_ROOT) {
+        cur_dir = buffer[cur_dir * 16];
+        flag = true;
+      } else {
+        flag = false;
+      }
     } else {
       for (i = 0; i < 64; i++) {
         if (buffer[i * 16] == cur_dir &&
             strcmp(buffer + i * 16 + 2, args[it])) {
           // print("FOUND");
           cur_dir = i;
-          *success = true;
+          flag = true;
           break;
         }
       }
     }
+    if(!flag) *success = false;
     // print("<");
     // print(args[it]);
     // print(" : ");

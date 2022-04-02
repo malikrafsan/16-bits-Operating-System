@@ -65,7 +65,7 @@ void cd(byte *parent, char *path) {
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  if (buffer[res * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
+  if (res==FS_NODE_P_IDX_ROOT || buffer[res * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
     *parent = res;
   } else {
     print("Not a directory\n");
