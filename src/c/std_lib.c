@@ -79,10 +79,10 @@ int splitStr(char* str, char** res, char delimiter) {
     int j=0;
     int k=0;
 
-    print("splitStr\n");
-    print("src string: ");
-    print(str);
-    print(">\n");
+    // print("splitStr\n");
+    // print("src string: ");
+    // print(str);
+    // print(">\n");
     while(str[i]!='\0'){
         printChar(str[i]);
         if(str[i]==delimiter){

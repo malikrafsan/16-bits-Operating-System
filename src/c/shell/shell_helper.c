@@ -146,17 +146,17 @@ void printHex(byte b) {
 
 byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
   char buffer[1024];
-  char** args;
-  int i, it, argc;
+  // char** args;
+  int i, n, i1;
+  char* name[15];
+  char c;
   bool flag;
 
   print("-");
-
+  i1 = 0;
   if (path[0] == '/') {
     cur_dir = FS_NODE_P_IDX_ROOT;
-    argc = splitStr(path + 1, args, '/');
-  } else {
-    argc = splitStr(path, args, '/');
+    i1 = 1;
   }
 
   print("-");
@@ -174,11 +174,22 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
   // }
   // print("\n");
   *success = true;
-  for (it = 0; it < argc; it++) {
+  while(path[i1]!='\0') {
+    n = 0;
+    while(path[i1+n]!='\0' && path[i1+n]!='/') {
+      n++;
+    }
+    c = path[i1+n];
+    path[i1+n] = '\0';
+    // memcpy(name, &path[i], n);
+    strcpy(name,&(path[i1]));
+    // name[n] = '\0';
+    path[i1+n] = c;
+
     flag = false;
     // print(args[it]);
     // print(" -> ");
-    if (strcmp(args[it], "..")) {
+    if (strcmp(name, "..")) {
       if(cur_dir != FS_NODE_P_IDX_ROOT) {
         cur_dir = buffer[cur_dir * 16];
         flag = true;
@@ -188,7 +199,7 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
     } else {
       for (i = 0; i < 64; i++) {
         if (buffer[i * 16] == cur_dir &&
-            strcmp(buffer + i * 16 + 2, args[it])) {
+            strcmp(buffer + i * 16 + 2, name)) {
           // print("FOUND");
           cur_dir = i;
           flag = true;
@@ -196,17 +207,19 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
         }
       }
     }
-    if(!flag) *success = false;
-    // print("<");
-    // print(args[it]);
-    // print(" : ");
-    // printHex(cur_dir);
-    // print(">\n");
+    if(!flag) {
+      if(flag) print("flag");
+      *success = false;
+      return cur_dir;
+    } 
+
+    clearStr(name);
+    i1 +=n;
+    while(path[i1]!='\0' && path[i1]=='/') {
+      i1++;
+    }
   }
 
-  for (it = 0; it < argc; it++) {
-    clearStr(args[it]);
-  }
   clearStr(buffer);
 
   return cur_dir;
@@ -256,3 +269,31 @@ void deleteFile(byte cur_dir, char* filename) {
   writeSector(node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
   writeSector(map_buffer, FS_MAP_SECTOR_NUMBER);
 }
+
+bool getParentPath(char *child, char *parent) {
+  int idxLastSlash, i;
+
+  strcpy(parent, child);
+
+  idxLastSlash = -1;
+  for (i = 0; parent[i] != '\0' ; i++) {
+    if (parent[i] == '/') {
+      idxLastSlash = i;
+    }
+  }
+
+  if (idxLastSlash == -1) {
+    // parent = "/";
+    return false;
+  }
+
+  while (1) {
+    if (parent[idxLastSlash] == '\0') {
+      break;
+    }
+    parent[idxLastSlash] = '\0';
+  }
+
+  return true;
+}
+
