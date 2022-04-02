@@ -18,4 +18,10 @@ void testWrite();
 
 void cwd(byte cur_dir);
 
+void clearStr(char* str);
+
+void printChar(char c);
+
+void printHex(byte b);
+
 #endif

@@ -122,3 +122,25 @@ void cwd(byte cur_dir) {
   print(cur_name);
   clearStr(cur_name);
 }
+
+void printChar(char c) {
+  char str[2];
+  
+  interrupt(0x10, 0xe*256 + c, 0, 0, 0);
+  str[0] = c;
+  str[1] = '\0';
+  print(str);
+}
+
+void printHex(byte b) {
+  char* str = "__";
+  byte temp;
+
+  print("0x");
+  temp = div(b, 16);
+  str[0] = temp > 9 ? temp + 55 : temp + 48;
+
+  temp = mod(b, 16);
+  str[1] = temp > 9 ? temp + 55 : temp + 48;
+  print(str);
+}
