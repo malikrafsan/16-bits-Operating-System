@@ -144,7 +144,7 @@ void printHex(byte b) {
   print(str);
 }
 
-byte getIdxByPath(byte cur_dir, char* path) {
+byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
   char buffer[1024];
   char** args;
   int i, it, argc;
@@ -174,6 +174,7 @@ byte getIdxByPath(byte cur_dir, char* path) {
   // print("\n");
 
   for (it = 0; it < argc; it++) {
+    *success = false;
     // print(args[it]);
     // print(" -> ");
     if (strcmp(args[it], "..")) {
@@ -181,10 +182,10 @@ byte getIdxByPath(byte cur_dir, char* path) {
     } else {
       for (i = 0; i < 64; i++) {
         if (buffer[i * 16] == cur_dir &&
-            buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER &&
             strcmp(buffer + i * 16 + 2, args[it])) {
           // print("FOUND");
           cur_dir = i;
+          *success = true;
           break;
         }
       }

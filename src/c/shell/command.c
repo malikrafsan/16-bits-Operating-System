@@ -51,7 +51,25 @@ void mkdir(byte cur_dir, char *name) {
 }
 
 void cd(byte *parent, char *path) {
-  *parent = getIdxByPath(*parent, path);
+  char buffer[1024];
+  byte res;
+  bool success;
+
+  res = getIdxDirByPath(*parent, path, &success);
+
+  if (!success) {
+    print("No such directory\n");
+    return;
+  }
+
+  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+
+  if (buffer[res * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
+    *parent = res;
+  } else {
+    print("Not a directory\n");
+  }
 }
 
 void cat(byte cur_dir, char *path) {
