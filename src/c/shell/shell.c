@@ -13,7 +13,10 @@ void shell() {
   clearScreen();
   printHeaderShell();
   //testWrite();
-  while (1) {
+  while (1) {  
+    print("CURDIR: <");
+    printHex(current_dir);
+    print(">\n");
     print("OSThanos:");
     cwd(current_dir);
     print("$? ");
@@ -23,6 +26,7 @@ void shell() {
 
     print("Your command is:\n");
     describeCmd(args, argc);
+    print("\n");
 
     if (strcmp(args[0], "cd")) {
       if (argc != 2) {
@@ -40,12 +44,11 @@ void shell() {
       if (argc != 1) {
         print("ls command must have 0 argument\n");
       } else {
-        print("listing directories and files\n");
         ls(current_dir);
       }
     } else if(strcmp(args[0], "cat")){
       if(argc != 2) {
-        ;
+        print("cat command must have 1 argument\n");
       } else {
         print("mulai cat\n");
         cat(current_dir,args[1]);
@@ -53,6 +56,7 @@ void shell() {
     }else {  
       print("Unknown command\n");
     }
+    print("\n");
   }
 }
 

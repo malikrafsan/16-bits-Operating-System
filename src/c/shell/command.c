@@ -2,7 +2,7 @@
 
 void ls(byte curDir) {
   char buffer[1024];
-  char *name;
+  char name[15];
   int i, j, idxName, count;
 
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
@@ -10,7 +10,7 @@ void ls(byte curDir) {
 
   count = 0;
   for (i = 0; i < 64; i++) {
-    if (buffer[i * 16] == curDir) {
+    if (buffer[i * 16] == curDir && strlen(buffer + i * 16 + 2) != 0) {
       if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
         print("dir: ");
       } else {
@@ -23,11 +23,13 @@ void ls(byte curDir) {
       print(name);
       print("\n");
       count++;
+      clearStr(name);
     }
   }
   if (count == 0) {
     print("Empty directory\n");
   }
+  clearStr(buffer);
 }
 
 void mkdir(byte cur_dir, char *name) {
@@ -60,7 +62,7 @@ void cd(byte *parent, char *path) {
 
   cur_dir = *parent;
   if (strcmp(path, "..") == true) {
-    *parent = buffer[cur_dir*16];
+    *parent = buffer[cur_dir * 16];
   } else {
     for (i = 0; i < 64; i++) {
       if (buffer[i * 16] == cur_dir &&
@@ -84,7 +86,7 @@ void cd(byte *parent, char *path) {
 void cat(byte cur_dir, char *path) {
   struct file_metadata metadata;
   enum fs_retcode return_code;
-  byte buftemp[16*512];
+  byte buftemp[16 * 512];
 
   metadata.buffer = buftemp;
   metadata.node_name = path;
@@ -97,23 +99,3 @@ void cat(byte cur_dir, char *path) {
   print("\n");
   print_fs_retcode(return_code);
 }
-
-// void cd(char *name, byte *parent){
-//   char buffer[1024];
-//   int i;
-
-//   handleInterrupt21(0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
-//   handleInterrupt21(0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
-
-//   for (i = 0; i < 64; i++) {
-//     if (buffer[i * 16] == *parent) {
-//       if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER && strcmp(buffer + i *
-//       16 + 2, name) == 1) {
-//         printString("Directory found\n");
-//         *parent = i;
-//       }
-//     }
-//   }
-
-//   printString("Directory not found\n");
-// }
