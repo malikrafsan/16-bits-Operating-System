@@ -43,8 +43,16 @@ void shell() {
         print("listing directories and files\n");
         ls(current_dir);
       }
-    } else {  
+    } else if(strcmp(args[0], "cat")){
+      if(argc != 2) {
+        ;
+      } else {
+        print("mulai cat\n");
+        cat(current_dir,args[1]);
+      }
+    }else {  
       print("Unknown command\n");
     }
   }
 }
+

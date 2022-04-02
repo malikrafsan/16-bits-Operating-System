@@ -60,7 +60,7 @@ void cd(byte *parent, char *path) {
 
   cur_dir = *parent;
   if (strcmp(path, "..") == true) {
-    *parent = buffer[cur_dir];
+    *parent = buffer[cur_dir*16];
   } else {
     for (i = 0; i < 64; i++) {
       if (buffer[i * 16] == cur_dir &&
@@ -70,7 +70,7 @@ void cd(byte *parent, char *path) {
         // print(&buffer[i * 16 + 2]);
         // print("\n");
         flag_temp = true;
-        cur_dir = i * 16;
+        cur_dir = i;
         // print("curdir: ");
         // print(&buffer[cur_dir + 2]);
         // print("\n");
@@ -79,6 +79,23 @@ void cd(byte *parent, char *path) {
     }
     *parent = cur_dir;
   }
+}
+
+void cat(byte cur_dir, char *path) {
+  struct file_metadata metadata;
+  enum fs_retcode return_code;
+  byte buftemp[16*512];
+
+  metadata.buffer = buftemp;
+  metadata.node_name = path;
+  metadata.parent_index = cur_dir;
+
+  interrupt(0x21, 0x4, &metadata, &return_code, 0);
+
+  print("buffer: \n");
+  print(metadata.buffer);
+  print("\n");
+  print_fs_retcode(return_code);
 }
 
 // void cd(char *name, byte *parent){

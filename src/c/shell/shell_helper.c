@@ -90,26 +90,35 @@ void cwd(byte cur_dir) {
   char buffer[1024];
   char temp[16];
   char* cur_name = "";
+  byte child[64];
+  byte u;
 
   if (cur_dir == FS_NODE_P_IDX_ROOT) {
     print("/");
-  }
+  } else {
+    interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+    interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
-  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  while (1) {
-    if (cur_dir == FS_NODE_P_IDX_ROOT) {
-      break;
+    // inisialisasi child
+    u = cur_dir;
+    while(buffer[16*u] != FS_NODE_P_IDX_ROOT) {
+      child[buffer[16*u]] = u;
+      u = buffer[16*u];
     }
+    while (1) {
+      bounded_strcpy(temp + 1, &buffer[16*u + 2], 14);
+      temp[0] = '/';
 
-    bounded_strcpy(temp + 1, &buffer[cur_dir + 2], 14);
-    temp[0] = '/';
-
-    strcat(cur_name, temp);
-    cur_dir = buffer[cur_dir];
-    clearStr(temp);
+      strcat(cur_name, temp);
+      clearStr(temp);
+      if (u == cur_dir) {
+        break;
+      }
+      u = child[u];
+    }
   }
+
   print(cur_name);
   clearStr(cur_name);
 }
