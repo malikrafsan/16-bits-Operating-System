@@ -211,7 +211,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
     struct map_filesystem    map_fs_buffer;
     // Tambahkan tipe data yang dibutuhkan
     int i, j, idx_node, idx_sector, empty_space;
-    char sector_entry_buffer[16];
+    byte sector_entry_buffer[16];
     // Masukkan filesystem dari storage ke memori
     readSector(&(node_fs_buffer.nodes[0]), FS_NODE_SECTOR_NUMBER);
     readSector(&(node_fs_buffer.nodes[32]), FS_NODE_SECTOR_NUMBER+1);
@@ -275,7 +275,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
     //    FS_W_NOT_ENOUGH_STORAGE dan keluar.
     //    Jika tersedia empty space, lanjutkan langkah ke-5.
     empty_space = 0;
-    for(i=0;i<255;i++) {
+    for(i=0;i<256;i++) {
         if(map_fs_buffer.is_filled[i]==0x0) {
             empty_space++;
         }
@@ -309,7 +309,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
 
     // Penulisan
     // 1. Tuliskan metadata nama dan byte P ke node pada memori buffer
-    strcpy(node_fs_buffer.nodes[idx_node].name, metadata->node_name);
+    bounded_strcpy(node_fs_buffer.nodes[idx_node].name, metadata->node_name, 14);
     node_fs_buffer.nodes[idx_node].parent_node_index = metadata->parent_index;
 
     // 2. Jika menulis folder, tuliskan byte S dengan nilai 
@@ -343,15 +343,26 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
             }
             i++;
         }
+        while (j<16){
+            sector_entry_buffer[j] = 0x0;
+            j++;
+        }
         
         // 7. Lakukan update dengan memcpy() buffer entri sector dengan 
         //    buffer filesystem sector
-        memcpy(sector_entry_buffer, sector_fs_buffer.sector_list[idx_sector].sector_numbers, 512);
+        printString("SECTOR ENTRY BUFFER\n");
+        printHex(sector_entry_buffer[0]);
+        printString("\n");
+        memcpy(sector_fs_buffer.sector_list[idx_sector].sector_numbers, sector_entry_buffer, 16);
+        printString("SECTOR FILESYSTEM\n");
+        printHex(sector_fs_buffer.sector_list[idx_sector].sector_numbers[0]);
+        printString("\n");
     }
     // 8. Lakukan penulisan seluruh filesystem (map, node, sector) ke storage
     //    menggunakan writeSector() pada sektor yang sesuai
     writeSector(&(map_fs_buffer.is_filled[0]), FS_MAP_SECTOR_NUMBER);
     writeSector(&(node_fs_buffer.nodes[0]), FS_NODE_SECTOR_NUMBER);
+    writeSector(&(node_fs_buffer.nodes[32]), FS_NODE_SECTOR_NUMBER+1);
     writeSector(&(sector_entry_buffer[0]), FS_SECTOR_SECTOR_NUMBER);
     // 9. Kembalikan retcode FS_SUCCESS
     *return_code = FS_SUCCESS;
