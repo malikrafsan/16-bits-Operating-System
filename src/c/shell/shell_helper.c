@@ -4,18 +4,18 @@ void print(char *string) { interrupt(0x21, 0x0, string, 0, 0); }
 
 void input(char *string) { interrupt(0x21, 0x1, string, 0, 0); }
 
-void describeCmd(char **args, int argc) {
-  int i;
-  char *str = "0. ";
+// void describeCmd(char **args, int argc) {
+//   int i;
+//   char *str = "0. ";
 
-  for (i = 0; i < argc; i++) {
-    str[0]++;
-    print(str);
-    print(args[i]);
-    print("\n");
-  }
-  str[0] = '0';
-}
+//   for (i = 0; i < argc; i++) {
+//     str[0]++;
+//     print(str);
+//     print(args[i]);
+//     print("\n");
+//   }
+//   str[0] = '0';
+// }
 
 void printHeaderShell() {
   char *string = "Tugas Besar OS Thanos\n";
@@ -28,40 +28,40 @@ void printHeaderShell() {
   }
 }
 
-void print_fs_retcode(enum fs_retcode return_code) {
-  switch (return_code) {
-  case FS_UNKNOWN_ERROR:
-    print("Unknown error\n");
-    break;
-  case FS_SUCCESS:
-    print("Success\n");
-    break;
-  case FS_R_NODE_NOT_FOUND:
-    print("Node not found\n");
-    break;
-  case FS_R_TYPE_IS_FOLDER:
-    print("Type is folder\n");
-    break;
-  case FS_W_FILE_ALREADY_EXIST:
-    print("Already exist\n");
-    break;
-  case FS_W_NOT_ENOUGH_STORAGE:
-    print("Not enough storage\n");
-    break;
-  case FS_W_MAXIMUM_NODE_ENTRY:
-    print("Maximum node entry\n");
-    break;
-  case FS_W_MAXIMUM_SECTOR_ENTRY:
-    print("Maximum sector entry\n");
-    break;
-  case FS_W_INVALID_FOLDER:
-    print("Invalid folder\n");
-    break;
-  default:
-    print("Unknown error\n");
-    break;
-  }
-}
+// void print_fs_retcode(enum fs_retcode return_code) {
+//   switch (return_code) {
+//   case FS_UNKNOWN_ERROR:
+//     print("Unknown error\n");
+//     break;
+//   case FS_SUCCESS:
+//     print("Success\n");
+//     break;
+//   case FS_R_NODE_NOT_FOUND:
+//     print("Node not found\n");
+//     break;
+//   case FS_R_TYPE_IS_FOLDER:
+//     print("Type is folder\n");
+//     break;
+//   case FS_W_FILE_ALREADY_EXIST:
+//     print("Already exist\n");
+//     break;
+//   case FS_W_NOT_ENOUGH_STORAGE:
+//     print("Not enough storage\n");
+//     break;
+//   case FS_W_MAXIMUM_NODE_ENTRY:
+//     print("Maximum node entry\n");
+//     break;
+//   case FS_W_MAXIMUM_SECTOR_ENTRY:
+//     print("Maximum sector entry\n");
+//     break;
+//   case FS_W_INVALID_FOLDER:
+//     print("Invalid folder\n");
+//     break;
+//   default:
+//     print("Unknown error\n");
+//     break;
+//   }
+// }
 
 void testWrite() {
   struct file_metadata metadata;
@@ -75,7 +75,7 @@ void testWrite() {
   print("----\n");
   interrupt(0x21, 0x5, &metadata, &return_code, 0);
   print("return code: ");
-  print_fs_retcode(return_code);
+  printHex(return_code);
   print("\n");
 }
 

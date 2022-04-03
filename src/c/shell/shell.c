@@ -1,19 +1,19 @@
-#include "../header/kernel.h"
 #include "../header/shell.h"
 #include "../header/command.h"
+#include "../header/kernel.h"
 #include "../header/shell_helper.h"
+
 
 void shell() {
   char input_buf[64];
   char path_str[128];
-  char **args;
+  char** args;
   int argc;
   byte current_dir = FS_NODE_P_IDX_ROOT;
 
   clearScreen();
-  printHeaderShell();
-  //testWrite();
-  while (1) {  
+  // printHeaderShell();
+  while (1) {
     print("CURDIR: <");
     printHex(current_dir);
     print(">\n");
@@ -24,51 +24,25 @@ void shell() {
 
     argc = splitStr(input_buf, args, ' ');
 
-    print("Your command is:\n");
-    describeCmd(args, argc);
-    print("\n");
+    // print("Your command is:\n");
+    // describeCmd(args, argc);
+    // print("\n");
 
-    if (strcmp(args[0], "cd")) {
-      if (argc != 2) {
-        print("cd command must have 1 argument\n");
-      } else {
-        cd(&current_dir, args[1]);
-      }
-    } else if (strcmp(args[0], "mkdir")) {
-      if (argc != 2) {
-        print("mkdir command must have 1 argument\n");
-      } else {
-        mkdir(current_dir, args[1]);
-      }
-    } else if (strcmp(args[0], "ls")) {
-      if (argc != 1) {
-        print("ls command must have 0 argument\n");
-      } else {
-        ls(current_dir);
-      }
-    } else if (strcmp(args[0], "cat")){
-      if(argc != 2) {
-        print("cat command must have 1 argument\n");
-      } else {
-        print("mulai cat\n");
-        cat(current_dir,args[1]);
-      }
-    } else if (strcmp(args[0], "mv")) {
-      if (argc != 3) {
-        print("mv command must have 2 argument\n");
-      } else {
-        mv(current_dir, args[1], args[2]);
-      }
-    } else if (strcmp(args[0], "cp")) {
-      if (argc != 3) {
-        print("cp command must have 2 argument\n");
-      } else {
-        cp(current_dir, args[1], args[2]);
-      }
-    } else {  
-      print("Unknown command\n");
+    if (strcmp(args[0], "cd") && argc == 2) {
+      cd(&current_dir, args[1]);
+    } else if (strcmp(args[0], "mkdir") && argc == 2) {
+      mkdir(current_dir, args[1]);
+    } else if (strcmp(args[0], "ls") && argc == 1) {
+      ls(current_dir);
+    } else if (strcmp(args[0], "cat") && argc == 2) {
+      cat(current_dir, args[1]);
+    } else if (strcmp(args[0], "mv") && argc == 3) {
+      mv(current_dir, args[1], args[2]);
+    } else if (strcmp(args[0], "cp") && argc == 3) {
+      cp(current_dir, args[1], args[2]);
+    } else {
+      print("Unknown command or wrong format\n");
     }
     print("\n");
   }
 }
-

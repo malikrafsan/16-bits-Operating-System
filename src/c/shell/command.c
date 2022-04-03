@@ -47,7 +47,9 @@ void mkdir(byte cur_dir, char *name) {
   metadata.filesize = 0;
 
   interrupt(0x21, 0x5, &metadata, &return_code, 0);
-  print_fs_retcode(return_code);
+  print("return code: ");
+  printHex(return_code);
+  print("\n");
 }
 
 void cd(byte *parent, char *path) {
@@ -86,7 +88,9 @@ void cat(byte cur_dir, char *path) {
   print("buffer: \n");
   print(metadata.buffer);
   print("\n");
-  print_fs_retcode(return_code);
+  print("return code: ");
+  printHex(return_code);
+  print("\n");
 }
 
 void mv(byte cur_dir, char *path_src, char *path_dest) {

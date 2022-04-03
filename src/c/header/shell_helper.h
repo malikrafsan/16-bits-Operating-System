@@ -8,11 +8,9 @@ void input(char *string);
 
 void print(char *string);
 
-void describeCmd(char **args, int argc);
+// void describeCmd(char **args, int argc);
 
 void printHeaderShell();
-
-void print_fs_retcode(enum fs_retcode return_code);
 
 void testWrite();
 
