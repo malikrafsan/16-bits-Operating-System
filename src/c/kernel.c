@@ -225,7 +225,11 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
 
     for (i=0;i<64;i++) {
         if(strcmp(node_fs_buffer.nodes[i].name, metadata->node_name) && node_fs_buffer.nodes[i].parent_node_index == metadata->parent_index) {
-            *return_code = FS_W_FILE_ALREADY_EXIST;
+            if(node_fs_buffer.nodes[i].sector_entry_index==FS_NODE_S_IDX_FOLDER) {
+                *return_code = FS_R_TYPE_IS_FOLDER;
+            } else {
+                *return_code = FS_W_FILE_ALREADY_EXIST;
+            }
             return;
         }
     }

@@ -240,6 +240,7 @@ void deleteFile(byte cur_dir, char* filename) {
     j = sector_buffer[idx_node * 16 + i];
     if (j != 0) {
       map_buffer[j] = 0;
+      sector_buffer[idx_node * 16 + i] = 0x0;
     }
   }
 

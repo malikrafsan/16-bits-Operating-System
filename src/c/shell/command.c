@@ -196,5 +196,8 @@ void cp(byte current_dir, char* src, char* dst) {
   if (return_code == FS_W_FILE_ALREADY_EXIST) {
     deleteFile(current_dir, dst);
     interrupt(0x21, 0x5, &metadata, &return_code, 0);
+  } else if(return_code == FS_R_TYPE_IS_FOLDER) {
+    print(dst);
+    print(" is folder\n");
   }
 }
