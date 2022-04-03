@@ -84,7 +84,7 @@ int splitStr(char* str, char** res, char delimiter) {
     // print(str);
     // print(">\n");
     while(str[i]!='\0'){
-        printChar(str[i]);
+        // printChar(str[i]);
         if(str[i]==delimiter){
             res[j][k]='\0';
             j++;
@@ -97,7 +97,7 @@ int splitStr(char* str, char** res, char delimiter) {
         i++;
     }
     res[j][k]='\0';
-    print("\n");
+    // print("\n");
     
     return j+1;
 }
