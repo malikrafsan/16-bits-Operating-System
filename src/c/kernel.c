@@ -47,7 +47,7 @@ void fillKernelMap() {
     // Load filesystem map
     readSector(&map_fs_buffer, FS_MAP_SECTOR_NUMBER);
 
-    for(i=0;i<=15;i++) {
+    for(i=0;i<=18;i++) {
         map_fs_buffer.is_filled[i] = true;
     }
     for(i=256;i<=511;i++) {
