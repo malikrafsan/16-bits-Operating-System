@@ -17,16 +17,16 @@ void input(char *string) { interrupt(0x21, 0x1, string, 0, 0); }
 //   str[0] = '0';
 // }
 
-void printHeaderShell() {
-  char *string = "Tugas Besar OS Thanos\n";
-  int i = 0;
+// void printHeaderShell() {
+//   char *string = "Tugas Besar OS Thanos\n";
+//   int i = 0;
 
-  print(string);
-  for (i = 0; i < strlen(string); i++) {
-    byte warna = 0xD;
-    putInMemory(0xB000, 0x8001 + 2 * i, warna);
-  }
-}
+//   print(string);
+//   for (i = 0; i < strlen(string); i++) {
+//     byte warna = 0xD;
+//     putInMemory(0xB000, 0x8001 + 2 * i, warna);
+//   }
+// }
 
 // void print_fs_retcode(enum fs_retcode return_code) {
 //   switch (return_code) {
@@ -63,12 +63,12 @@ void printHeaderShell() {
 //   }
 // }
 
-void testWrite() {
+void testWrite(char* name, char* buffer) {
   struct file_metadata metadata;
   enum fs_retcode return_code;
 
-  metadata.buffer = "ini isi dari test.txt";
-  metadata.node_name = "test.txt";
+  metadata.buffer = buffer;
+  metadata.node_name = name;
   metadata.parent_index = FS_NODE_P_IDX_ROOT;
   metadata.filesize = 512;
 

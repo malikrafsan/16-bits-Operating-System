@@ -12,7 +12,7 @@ void print(char *string);
 
 void printHeaderShell();
 
-void testWrite();
+void testWrite(char* name, char* buffer);
 
 void cwd(byte cur_dir);
 

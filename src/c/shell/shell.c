@@ -12,6 +12,8 @@ void shell() {
   byte current_dir = FS_NODE_P_IDX_ROOT;
 
   clearScreen();
+  testWrite("test.txt", "ini isi test.txt");
+  testWrite("real.txt", "ini isi real.txt");
   // printHeaderShell();
   while (1) {
     print("CURDIR: <");
