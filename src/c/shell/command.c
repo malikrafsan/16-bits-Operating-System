@@ -3,12 +3,14 @@
 void ls(byte curDir) {
   char buffer[1024];
   char name[15];
-  int i, j, idxName, count;
+  int i, j, idxName;
+  bool isEmpty;
 
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  count = 0;
+  // count = 0;
+  isEmpty = true;
   for (i = 0; i < 64; i++) {
     if (buffer[i * 16] == curDir && strlen(buffer + i * 16 + 2) != 0) {
       if (buffer[i * 16 + 1] == FS_NODE_S_IDX_FOLDER) {
@@ -22,11 +24,12 @@ void ls(byte curDir) {
       bounded_strcpy(name, buffer + idxName, 14);
       print(name);
       print("\n");
-      count++;
+      // count++;
+      isEmpty = false;
       clearStr(name);
     }
   }
-  if (count == 0) {
+  if (isEmpty) {
     print("Empty directory\n");
   }
   clearStr(buffer);
@@ -87,8 +90,7 @@ void cat(byte cur_dir, char *path) {
 
   print("buffer: \n");
   print(metadata.buffer);
-  print("\n");
-  print("return code: ");
+  print("\nreturn code: ");
   printHex(return_code);
   print("\n");
 }
@@ -114,7 +116,6 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   idx_dest = getIdxDirByPath(cur_dir, path_dest, &success_dest);
 
   if (success_dest) {
-    print("cancel beacuse ");
     print(path_dest);
     print(" exist\n");
     return;

@@ -10,15 +10,13 @@ void print(char *string);
 
 // void describeCmd(char **args, int argc);
 
-void printHeaderShell();
+// void printHeaderShell();
 
-void testWrite(char* name, char* buffer);
+// void testWrite(char* name, char* buffer);
 
 void cwd(byte cur_dir);
 
 void clearStr(char* str);
-
-void printChar(char c);
 
 void printHex(byte b);
 

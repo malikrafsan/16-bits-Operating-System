@@ -10,10 +10,12 @@ void shell() {
   char** args;
   int argc;
   byte current_dir = FS_NODE_P_IDX_ROOT;
+  byte res;
+  bool success;
 
   clearScreen();
-  testWrite("test.txt", "ini isi test.txt");
-  testWrite("real.txt", "ini isi real.txt");
+  // testWrite("test.txt", "ini isi test.txt");
+  // testWrite("real.txt", "ini isi real.txt");
   // printHeaderShell();
   while (1) {
     print("CURDIR: <");
@@ -25,6 +27,9 @@ void shell() {
     input(input_buf);
 
     argc = splitStr(input_buf, args, ' ');
+    // print("argc: ");
+    // printHex(argc);
+    // print("\n");
 
     // print("Your command is:\n");
     // describeCmd(args, argc);
@@ -36,6 +41,14 @@ void shell() {
       mkdir(current_dir, args[1]);
     } else if (strcmp(args[0], "ls") && argc == 1) {
       ls(current_dir);
+    } else if (strcmp(args[0], "ls") && argc == 2) {
+      res = getIdxDirByPath(current_dir, args[1], &success);
+      
+      if (!success) {
+        print("No such directory\n");
+      } else {
+        ls(res);
+      }
     } else if (strcmp(args[0], "cat") && argc == 2) {
       cat(current_dir, args[1]);
     } else if (strcmp(args[0], "mv") && argc == 3) {

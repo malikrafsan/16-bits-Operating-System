@@ -63,21 +63,21 @@ void input(char *string) { interrupt(0x21, 0x1, string, 0, 0); }
 //   }
 // }
 
-void testWrite(char* name, char* buffer) {
-  struct file_metadata metadata;
-  enum fs_retcode return_code;
+// void testWrite(char* name, char* buffer) {
+//   struct file_metadata metadata;
+//   enum fs_retcode return_code;
 
-  metadata.buffer = buffer;
-  metadata.node_name = name;
-  metadata.parent_index = FS_NODE_P_IDX_ROOT;
-  metadata.filesize = 512;
+//   metadata.buffer = buffer;
+//   metadata.node_name = name;
+//   metadata.parent_index = FS_NODE_P_IDX_ROOT;
+//   metadata.filesize = 512;
 
-  print("----\n");
-  interrupt(0x21, 0x5, &metadata, &return_code, 0);
-  print("return code: ");
-  printHex(return_code);
-  print("\n");
-}
+//   print("----\n");
+//   interrupt(0x21, 0x5, &metadata, &return_code, 0);
+//   print("return code: ");
+//   printHex(return_code);
+//   print("\n");
+// }
 
 void clearStr(char* str) {
   int i;
@@ -123,16 +123,8 @@ void cwd(byte cur_dir) {
   clearStr(cur_name);
 }
 
-void printChar(char c) {
-  char str[2];
-
-  str[0] = c;
-  str[1] = '\0';
-  print(str);
-}
-
 void printHex(byte b) {
-  char* str = "__";
+  char str[3];
   byte temp;
 
   print("0x");
@@ -141,30 +133,25 @@ void printHex(byte b) {
 
   temp = mod(b, 16);
   str[1] = temp > 9 ? temp + 55 : temp + 48;
+  str[2] = '\0';
   print(str);
 }
 
 byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
   char buffer[1024];
-  // char** args;
   int i, n, i1;
   char* name[15];
   char c;
   bool flag;
 
-  print("-");
   i1 = 0;
   if (path[0] == '/') {
     cur_dir = FS_NODE_P_IDX_ROOT;
     i1 = 1;
   }
 
-  print("-");
-
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
-
-  print("-");
 
   // for (it = 0; it < argc; it++) {
   //   printHex(it);
@@ -208,7 +195,6 @@ byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
       }
     }
     if(!flag) {
-      if(flag) print("flag");
       *success = false;
       return cur_dir;
     } 
