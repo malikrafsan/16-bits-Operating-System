@@ -363,7 +363,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
     writeSector(&(map_fs_buffer.is_filled[0]), FS_MAP_SECTOR_NUMBER);
     writeSector(&(node_fs_buffer.nodes[0]), FS_NODE_SECTOR_NUMBER);
     writeSector(&(node_fs_buffer.nodes[32]), FS_NODE_SECTOR_NUMBER+1);
-    writeSector(&(sector_entry_buffer[0]), FS_SECTOR_SECTOR_NUMBER);
+    writeSector(sector_fs_buffer.sector_list, FS_SECTOR_SECTOR_NUMBER);    
     // 9. Kembalikan retcode FS_SUCCESS
     *return_code = FS_SUCCESS;
 }
