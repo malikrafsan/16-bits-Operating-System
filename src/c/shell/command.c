@@ -187,6 +187,9 @@ void cp(byte current_dir, char* src, char* dst) {
   if (return_code == FS_R_TYPE_IS_FOLDER) {
     interrupt(0x21, 0x0, "Cannot copy a folder\n", 0, 0);
     return;
+  } else if (return_code == FS_R_NODE_NOT_FOUND) {
+    interrupt(0x21, 0x0, "File not found\n", 0, 0);
+    return;
   }
 
   metadata.node_name = dst;
