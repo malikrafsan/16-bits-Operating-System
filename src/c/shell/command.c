@@ -104,10 +104,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   byte idx_src, idx_dest, idx_parent_dest;
   bool success_src, success_dest, success_parent_dest, success_get_parent;
   
-  print("CUR_DIR: "); printHex(cur_dir); print("\n");
-  print("path_src: "); print(path_src); print("\n");
   idx_src = getIdxDirByPath(cur_dir, path_src, &success_src);
-  print("idx_src: "); printHex(idx_src); print("\n");
   if (!success_src) {
     print("There is no ");
     print(path_src);
@@ -118,7 +115,6 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   idx_dest = getIdxDirByPath(cur_dir, path_dest, &success_dest);
 
   if (success_dest) {
-    print("cancel beacuse ");
     print(path_dest);
     print(" exist\n");
     return;
@@ -173,6 +169,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 }
+
 void cp(byte current_dir, char* src, char* dst) {
   struct file_metadata metadata;
   enum fs_retcode return_code;
