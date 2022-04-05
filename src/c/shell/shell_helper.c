@@ -272,7 +272,9 @@ bool getParentPath(char *child, char *parent) {
   if (idxLastSlash == -1) {
     // parent = "/";
     return false;
-  }
+  } else if(idxLastSlash==0) {
+    idxLastSlash = 1;
+  } //root
 
   while (1) {
     if (parent[idxLastSlash] == '\0') {
