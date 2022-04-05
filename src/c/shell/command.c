@@ -87,12 +87,14 @@ void cat(byte cur_dir, char *path) {
   metadata.parent_index = cur_dir;
 
   interrupt(0x21, 0x4, &metadata, &return_code, 0);
-
-  print("buffer: \n");
-  print(metadata.buffer);
-  print("\nreturn code: ");
+  
+  if(return_code==FS_SUCCESS) {
+    interrupt(0x21,0x0,"buffer:\n",0,0);
+    interrupt(0x21,0x0,metadata.buffer,0,0);
+  }
+  interrupt(0x21,0x0,"\nreturn code: ",0,0);
   printHex(return_code);
-  print("\n");
+  interrupt(0x21,0x0,"\n",0,0);
 }
 
 void mv(byte cur_dir, char *path_src, char *path_dest) {
