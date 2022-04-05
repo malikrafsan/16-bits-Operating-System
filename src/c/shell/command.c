@@ -88,6 +88,7 @@ void cat(byte cur_dir, char *path) {
   
   if(return_code==FS_SUCCESS) {
     print(metadata.buffer);
+    print("\n");
   }
   print_fs_retcode(return_code);
 }
