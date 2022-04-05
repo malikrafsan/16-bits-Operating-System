@@ -3,6 +3,17 @@
 #include "../header/kernel.h"
 #include "../header/shell_helper.h"
 
+void printHeaderShell() {
+  char *string = "Tugas Besar OS Thanos\n";
+  int i = 0;
+
+  print(string);
+  // handleInterrupt21(0x0, string, 0, 0);
+  for (i = 0; i < strlen(string); i++) {
+    byte warna = 0xCF;
+    putInMemory(0xB000, 0x8001 + 2 * i, warna);
+  }
+}
 
 void shell() {
   char input_buf[64];
@@ -16,7 +27,7 @@ void shell() {
   clearScreen();
   // testWrite("test.txt", "ini isi test.txt");
   // testWrite("real.txt", "ini isi real.txt");
-  // printHeaderShell();
+  printHeaderShell();
   while (1) {
     // print("CURDIR: <");
     // printHex(current_dir);

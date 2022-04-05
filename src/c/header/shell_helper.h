@@ -4,6 +4,8 @@
 #include "filesystem.h"
 #include "std_lib.h"
 
+void printHeaderShell();
+
 void input(char *string);
 
 void print(char *string);
