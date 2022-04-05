@@ -28,40 +28,34 @@ void input(char *string) { interrupt(0x21, 0x1, string, 0, 0); }
 //   }
 // }
 
-// void print_fs_retcode(enum fs_retcode return_code) {
-//   switch (return_code) {
-//   case FS_UNKNOWN_ERROR:
-//     print("Unknown error\n");
-//     break;
-//   case FS_SUCCESS:
-//     print("Success\n");
-//     break;
-//   case FS_R_NODE_NOT_FOUND:
-//     print("Node not found\n");
-//     break;
-//   case FS_R_TYPE_IS_FOLDER:
-//     print("Type is folder\n");
-//     break;
-//   case FS_W_FILE_ALREADY_EXIST:
-//     print("Already exist\n");
-//     break;
-//   case FS_W_NOT_ENOUGH_STORAGE:
-//     print("Not enough storage\n");
-//     break;
-//   case FS_W_MAXIMUM_NODE_ENTRY:
-//     print("Maximum node entry\n");
-//     break;
-//   case FS_W_MAXIMUM_SECTOR_ENTRY:
-//     print("Maximum sector entry\n");
-//     break;
-//   case FS_W_INVALID_FOLDER:
-//     print("Invalid folder\n");
-//     break;
-//   default:
-//     print("Unknown error\n");
-//     break;
-//   }
-// }
+void print_fs_retcode(enum fs_retcode return_code) {
+  switch (return_code) {
+  case FS_SUCCESS:
+    print("Success\n");
+    break;
+  case FS_R_NODE_NOT_FOUND:
+    print("Node not found\n");
+    break;
+  case FS_R_TYPE_IS_FOLDER:
+    print("Type is folder\n");
+    break;
+  case FS_W_FILE_ALREADY_EXIST:
+    print("Already exist\n");
+    break;
+  case FS_W_NOT_ENOUGH_STORAGE:
+    print("Not enough storage\n");
+    break;
+  case FS_W_MAXIMUM_NODE_ENTRY:
+    print("Maximum node entry\n");
+    break;
+  case FS_W_MAXIMUM_SECTOR_ENTRY:
+    print("Maximum sector entry\n");
+    break;
+  case FS_W_INVALID_FOLDER:
+    print("Invalid folder\n");
+    break;
+  }
+}
 
 // void testWrite(char* name, char* buffer) {
 //   struct file_metadata metadata;
@@ -230,10 +224,6 @@ void deleteFile(byte cur_dir, char* filename) {
       break;
     }
   }
-
-  print("idx_node: ");
-  printHex(idx_node);
-  print("\n");
 
   // telusuri di sector_buffer dan hapus di map_buffer
   for (i=0; i<16; i++) {

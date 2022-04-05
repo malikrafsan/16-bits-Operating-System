@@ -51,7 +51,7 @@ void mkdir(byte cur_dir, char *name) {
 
   interrupt(0x21, 0x5, &metadata, &return_code, 0);
   print("return code: ");
-  printHex(return_code);
+  print_fs_retcode(return_code);
   print("\n");
 }
 
@@ -89,12 +89,12 @@ void cat(byte cur_dir, char *path) {
   interrupt(0x21, 0x4, &metadata, &return_code, 0);
   
   if(return_code==FS_SUCCESS) {
-    interrupt(0x21,0x0,"buffer:\n",0,0);
-    interrupt(0x21,0x0,metadata.buffer,0,0);
+    print("buffer:\n");
+    print(metadata.buffer);
   }
-  interrupt(0x21,0x0,"\nreturn code: ",0,0);
-  printHex(return_code);
-  interrupt(0x21,0x0,"\n",0,0);
+  print("\nreturn code: ");
+  print_fs_retcode(return_code);
+  print("\n");
 }
 
 void mv(byte cur_dir, char *path_src, char *path_dest) {
@@ -125,17 +125,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  /*if (buffer[idx_dest * 16 + 1] != FS_NODE_S_IDX_FOLDER &&
-      idx_dest != FS_NODE_P_IDX_ROOT) {
-    print("Cannot move to file\n");
-    return;
-  }*/
-
   success_get_parent = getParentPath(path_dest, parent_dest);
-
-  // print("3. path_dest: ");
-  // print(path_dest);
-  // print("\n");
 
   if (!success_get_parent) {
     idx_parent_dest = FS_NODE_P_IDX_ROOT;
@@ -148,17 +138,10 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
     }
   }
 
-  // print("4. path_dest: ");
-  // print(path_dest);
-  // print("\n");
-
   argc = splitStr(path_dest, args, '/');
 
   strcpy(new_name, args[argc - 1]);
 
-  // print("new_name: ");
-  // print(new_name);
-  // print("\n");
   for (i=0;i < 14 && new_name[i] != '\0';i++) {
     buffer[idx_src * 16 + i + 2] = new_name[i];
   }
@@ -187,10 +170,10 @@ void cp(byte current_dir, char* src, char* dst) {
 
   // jika src berupa folder, gagalkan!
   if (return_code == FS_R_TYPE_IS_FOLDER) {
-    interrupt(0x21, 0x0, "Cannot copy a folder\n", 0, 0);
+    print("Cannot copy a folder\n");
     return;
   } else if (return_code == FS_R_NODE_NOT_FOUND) {
-    interrupt(0x21, 0x0, "File not found\n", 0, 0);
+    print("File not found\n");
     return;
   }
 
@@ -204,6 +187,9 @@ void cp(byte current_dir, char* src, char* dst) {
     deleteFile(current_dir, dst);
     interrupt(0x21, 0x5, &metadata, &return_code, 0);
   } else if(return_code == FS_R_TYPE_IS_FOLDER) {
-    interrupt(0x21, 0x0, "Destination is a folder\n", 0, 0);
+    print("Destination is a folder\n");
   }
+  print("\nreturn code: ");
+  print_fs_retcode(return_code);
+  print("\n");
 }

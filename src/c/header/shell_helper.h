@@ -14,6 +14,8 @@ void print(char *string);
 
 // void testWrite(char* name, char* buffer);
 
+void print_fs_retcode(enum fs_retcode return_code);
+
 void cwd(byte cur_dir);
 
 void clearStr(char* str);
