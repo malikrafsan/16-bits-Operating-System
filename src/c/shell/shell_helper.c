@@ -218,10 +218,10 @@ void deleteFile(byte cur_dir, char* filename) {
   int i, j;
   byte idx_node;
 
-  readSector(sector_buffer, FS_SECTOR_SECTOR_NUMBER);
-  readSector(node_buffer, FS_NODE_SECTOR_NUMBER);
-  readSector(node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
-  readSector(map_buffer, FS_MAP_SECTOR_NUMBER);
+  interrupt(0x21, 0x2, sector_buffer, FS_SECTOR_SECTOR_NUMBER);
+  interrupt(0x21, 0x2, node_buffer, FS_NODE_SECTOR_NUMBER);
+  interrupt(0x21, 0x2, node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
+  interrupt(0x21, 0x2, map_buffer, FS_MAP_SECTOR_NUMBER);
 
   // cari index dari filename di node_buffer
   for (i = 0; i < 64; i++) {
@@ -251,10 +251,10 @@ void deleteFile(byte cur_dir, char* filename) {
     node_buffer[idx_node * 16 + i] = '\0';
   }
 
-  writeSector(sector_buffer, FS_SECTOR_SECTOR_NUMBER);
-  writeSector(node_buffer, FS_NODE_SECTOR_NUMBER);
-  writeSector(node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
-  writeSector(map_buffer, FS_MAP_SECTOR_NUMBER);
+  interrupt(0x21, 0x3, sector_buffer, FS_SECTOR_SECTOR_NUMBER);
+  interrupt(0x21, 0x3, node_buffer, FS_NODE_SECTOR_NUMBER);
+  interrupt(0x21, 0x3, node_buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
+  interrupt(0x21, 0x3, map_buffer, FS_MAP_SECTOR_NUMBER);
 }
 
 bool getParentPath(char *child, char *parent) {
