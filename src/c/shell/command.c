@@ -60,7 +60,7 @@ void cd(byte *parent, char *path) {
   byte res;
   bool success;
 
-  res = getIdxDirByPath(*parent, path, &success);
+  res = getIdxByPath(*parent, path, &success);
 
   if (!success) {
     print("No such directory\n");
@@ -104,7 +104,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   byte idx_src, idx_dest, idx_parent_dest;
   bool success_src, success_dest, success_parent_dest, success_get_parent;
   
-  idx_src = getIdxDirByPath(cur_dir, path_src, &success_src);
+  idx_src = getIdxByPath(cur_dir, path_src, &success_src);
   if (!success_src) {
     print("There is no ");
     print(path_src);
@@ -112,7 +112,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
     return;
   }
 
-  idx_dest = getIdxDirByPath(cur_dir, path_dest, &success_dest);
+  idx_dest = getIdxByPath(cur_dir, path_dest, &success_dest);
 
   if (success_dest) {
     print(path_dest);
@@ -138,7 +138,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   if (!success_get_parent) {
     idx_parent_dest = FS_NODE_P_IDX_ROOT;
   } else {
-    idx_parent_dest = getIdxDirByPath(cur_dir, parent_dest, &success_parent_dest);
+    idx_parent_dest = getIdxByPath(cur_dir, parent_dest, &success_parent_dest);
 
     if (!success_parent_dest) {
       print("Unknown error\n");

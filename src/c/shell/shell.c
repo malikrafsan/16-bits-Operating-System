@@ -42,7 +42,7 @@ void shell() {
     } else if (strcmp(args[0], "ls") && argc == 1) {
       ls(current_dir);
     } else if (strcmp(args[0], "ls") && argc == 2) {
-      res = getIdxDirByPath(current_dir, args[1], &success);
+      res = getIdxByPath(current_dir, args[1], &success);
       
       if (!success) {
         print("No such directory\n");

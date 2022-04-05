@@ -137,10 +137,10 @@ void printHex(byte b) {
   print(str);
 }
 
-byte getIdxDirByPath(byte cur_dir, char* path, bool *success) {
+byte getIdxByPath(byte cur_dir, char* path, bool *success) {
   char buffer[1024];
   int i, n, i1;
-  char* name[15];
+  char name[15];
   char c;
   bool flag;
 

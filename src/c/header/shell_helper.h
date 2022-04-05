@@ -20,7 +20,7 @@ void clearStr(char* str);
 
 void printHex(byte b);
 
-byte getIdxDirByPath(byte cur_dir, char* path, bool *success);
+byte getIdxByPath(byte cur_dir, char* path, bool *success);
 
 void deleteFile(byte cur_dir, char* filename);
 
