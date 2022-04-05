@@ -98,14 +98,16 @@ void cat(byte cur_dir, char *path) {
 void mv(byte cur_dir, char *path_src, char *path_dest) {
   char buffer[1024];
   char **args;
-  char *parent_dest;
-  char *new_name;
+  char parent_dest[64];
+  char new_name[15];
   int argc, i;
   byte idx_src, idx_dest, idx_parent_dest;
   bool success_src, success_dest, success_parent_dest, success_get_parent;
-
+  
+  print("CUR_DIR: "); printHex(cur_dir); print("\n");
+  print("path_src: "); print(path_src); print("\n");
   idx_src = getIdxDirByPath(cur_dir, path_src, &success_src);
-
+  print("idx_src: "); printHex(idx_src); print("\n");
   if (!success_src) {
     print("There is no ");
     print(path_src);
@@ -116,6 +118,7 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   idx_dest = getIdxDirByPath(cur_dir, path_dest, &success_dest);
 
   if (success_dest) {
+    print("cancel beacuse ");
     print(path_dest);
     print(" exist\n");
     return;
@@ -124,11 +127,11 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
-  if (buffer[idx_dest * 16 + 1] != FS_NODE_S_IDX_FOLDER &&
+  /*if (buffer[idx_dest * 16 + 1] != FS_NODE_S_IDX_FOLDER &&
       idx_dest != FS_NODE_P_IDX_ROOT) {
     print("Cannot move to file\n");
     return;
-  }
+  }*/
 
   success_get_parent = getParentPath(path_dest, parent_dest);
 
@@ -170,7 +173,6 @@ void mv(byte cur_dir, char *path_src, char *path_dest) {
   interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
   interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 }
-
 void cp(byte current_dir, char* src, char* dst) {
   struct file_metadata metadata;
   enum fs_retcode return_code;

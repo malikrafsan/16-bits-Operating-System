@@ -120,31 +120,29 @@ void readString(char *string) {
 }
 
 void readSector(byte *buffer, int sector_number) {
-    int sector_read_count = 0x01;
     int cylinder, sector;
     int head, drive;
 
-    cylinder = div(sector_number, 36) << 8; // CH
+    cylinder = div(sector_number, 36) *0x100; // CH
     sector = mod(sector_number, 18) + 1; // CL
 
-    head = mod(div(sector_number, 18), 2) << 8; // DH
+    head = mod(div(sector_number, 18), 2) *0x100; // DH
     drive = 0x00; // DL
 
-    interrupt(0x13, 0x0200 | sector_read_count, buffer, cylinder | sector, head | drive);
+    interrupt(0x13, 0x0201, buffer, cylinder + sector, head + drive);
 }
 
 void writeSector(byte* buffer, int sector_number) {
-    int sector_write_count = 0x01;
     int cylinder, sector;
     int head, drive;
 
-    cylinder = div(sector_number, 36) << 8; // CH
+    cylinder = div(sector_number, 36) *0x100; // CH
     sector = mod(sector_number, 18) + 1; // CL
 
-    head = mod(div(sector_number, 18), 2) << 8; // DH
+    head = mod(div(sector_number, 18), 2) *0x100; // DH
     drive = 0x00; // DL
 
-    interrupt(0x13, 0x0300 | sector_write_count, buffer, cylinder | sector, head | drive);
+    interrupt(0x13, 0x0301, buffer, cylinder + sector, head + drive);
 }
 
 void read(struct file_metadata *metadata, enum fs_retcode *return_code) {

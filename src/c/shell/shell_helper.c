@@ -279,6 +279,7 @@ bool getParentPath(char *child, char *parent) {
       break;
     }
     parent[idxLastSlash] = '\0';
+    idxLastSlash++;
   }
 
   return true;
