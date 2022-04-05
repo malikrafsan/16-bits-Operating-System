@@ -253,17 +253,6 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
     if(metadata->parent_index != FS_NODE_P_IDX_ROOT && 
         (node_fs_buffer.nodes[metadata->parent_index].sector_entry_index != FS_NODE_S_IDX_FOLDER 
         || strlen(metadata->node_name)==0)) {
-        
-        if (metadata->parent_index != FS_NODE_P_IDX_ROOT) {
-            printString("PARENT NOT ROOT\n");
-        }
-        if (node_fs_buffer.nodes[metadata->parent_index].sector_entry_index != FS_NODE_S_IDX_FOLDER) {
-            printString("PARENT NOT FOLDER\n");
-        }
-        if (strlen(metadata->node_name)==0) {
-            printString("NODE NAME EMPTY\n");
-        }
-
         *return_code = FS_W_INVALID_FOLDER;
         return;
     }
@@ -352,13 +341,7 @@ void write(struct file_metadata *metadata, enum fs_retcode *return_code) {
         
         // 7. Lakukan update dengan memcpy() buffer entri sector dengan 
         //    buffer filesystem sector
-        printString("SECTOR ENTRY BUFFER\n");
-        printHex(sector_entry_buffer[0]);
-        printString("\n");
         memcpy(sector_fs_buffer.sector_list[idx_sector].sector_numbers, sector_entry_buffer, 16);
-        printString("SECTOR FILESYSTEM\n");
-        printHex(sector_fs_buffer.sector_list[idx_sector].sector_numbers[0]);
-        printString("\n");
     }
     // 8. Lakukan penulisan seluruh filesystem (map, node, sector) ke storage
     //    menggunakan writeSector() pada sektor yang sesuai

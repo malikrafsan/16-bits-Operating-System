@@ -183,10 +183,13 @@ void cp(byte current_dir, char* src, char* dst) {
   // Copy buffer from src to metadata.buffer
   interrupt(0x21, 0x4, &metadata, &return_code, 0);
 
+  // jika src berupa folder, gagalkan!
+  if (return_code == FS_R_TYPE_IS_FOLDER) {
+    interrupt(0x21, 0x0, "Cannot copy a folder\n", 0, 0);
+    return;
+  }
+
   metadata.node_name = dst;
-  print("buffer: \n");
-  print(metadata.buffer);
-  print("\n");
 
   // jika tidak ada, maka create file
   interrupt(0x21, 0x5, &metadata, &return_code, 0);
@@ -196,7 +199,6 @@ void cp(byte current_dir, char* src, char* dst) {
     deleteFile(current_dir, dst);
     interrupt(0x21, 0x5, &metadata, &return_code, 0);
   } else if(return_code == FS_R_TYPE_IS_FOLDER) {
-    print(dst);
-    print(" is folder\n");
+    interrupt(0x21, 0x0, "Destination is a folder\n", 0, 0);
   }
 }
