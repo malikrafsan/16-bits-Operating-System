@@ -18,9 +18,9 @@ void shell() {
   // testWrite("real.txt", "ini isi real.txt");
   // printHeaderShell();
   while (1) {
-    print("CURDIR: <");
-    printHex(current_dir);
-    print(">\n");
+    // print("CURDIR: <");
+    // printHex(current_dir);
+    // print(">\n");
     print("OSThanos:");
     cwd(current_dir);
     print("$? ");

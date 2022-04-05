@@ -34,7 +34,7 @@ void print_fs_retcode(enum fs_retcode return_code) {
     print("Success\n");
     break;
   case FS_R_NODE_NOT_FOUND:
-    print("Node not found\n");
+    print("Not found\n");
     break;
   case FS_R_TYPE_IS_FOLDER:
     print("Type is folder\n");
@@ -43,13 +43,13 @@ void print_fs_retcode(enum fs_retcode return_code) {
     print("Already exist\n");
     break;
   case FS_W_NOT_ENOUGH_STORAGE:
-    print("Not enough storage\n");
+    print("Not enough\n");
     break;
   case FS_W_MAXIMUM_NODE_ENTRY:
-    print("Maximum node entry\n");
+    print("Max node entry\n");
     break;
   case FS_W_MAXIMUM_SECTOR_ENTRY:
-    print("Maximum sector entry\n");
+    print("Max sector entry\n");
     break;
   case FS_W_INVALID_FOLDER:
     print("Invalid folder\n");

@@ -50,9 +50,7 @@ void mkdir(byte cur_dir, char *name) {
   metadata.filesize = 0;
 
   interrupt(0x21, 0x5, &metadata, &return_code, 0);
-  print("return code: ");
   print_fs_retcode(return_code);
-  print("\n");
 }
 
 void cd(byte *parent, char *path) {
@@ -92,9 +90,7 @@ void cat(byte cur_dir, char *path) {
     print("buffer:\n");
     print(metadata.buffer);
   }
-  print("\nreturn code: ");
   print_fs_retcode(return_code);
-  print("\n");
 }
 
 void mv(byte cur_dir, char *path_src, char *path_dest) {
@@ -169,11 +165,8 @@ void cp(byte current_dir, char* src, char* dst) {
   interrupt(0x21, 0x4, &metadata, &return_code, 0);
 
   // jika src berupa folder, gagalkan!
-  if (return_code == FS_R_TYPE_IS_FOLDER) {
-    print("Cannot copy a folder\n");
-    return;
-  } else if (return_code == FS_R_NODE_NOT_FOUND) {
-    print("File not found\n");
+  if (return_code == FS_R_TYPE_IS_FOLDER || return_code == FS_R_NODE_NOT_FOUND) {
+    print_fs_retcode(return_code);
     return;
   }
 
@@ -186,10 +179,6 @@ void cp(byte current_dir, char* src, char* dst) {
   if (return_code == FS_W_FILE_ALREADY_EXIST) {
     deleteFile(current_dir, dst);
     interrupt(0x21, 0x5, &metadata, &return_code, 0);
-  } else if(return_code == FS_R_TYPE_IS_FOLDER) {
-    print("Destination is a folder\n");
-  }
-  print("\nreturn code: ");
+  } 
   print_fs_retcode(return_code);
-  print("\n");
 }
