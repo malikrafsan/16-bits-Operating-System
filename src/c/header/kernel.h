@@ -26,8 +26,6 @@ void readSector(byte *buffer, int sector_number);
 void write(struct file_metadata *metadata, enum fs_retcode *return_code);
 void read(struct file_metadata *metadata, enum fs_retcode *return_code);
 
-void shell();
-
 extern void launchProgram(int segment);
 void executeProgram(struct file_metadata *metadata, int segment);
 

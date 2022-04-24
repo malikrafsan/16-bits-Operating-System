@@ -64,11 +64,19 @@ int splitStr(char *str, char **res, char delimiter) {
   int j = 0;
   int k = 0;
 
+  while(str[i]==delimiter) {
+    i++;
+  }
+
   while (str[i] != '\0') {
     if (str[i] == delimiter) {
       res[j][k] = '\0';
       j++;
       k = 0;
+      while(str[i]==delimiter) {
+        i++;
+      }
+      i--;
     } else {
       res[j][k] = str[i];
       k++;

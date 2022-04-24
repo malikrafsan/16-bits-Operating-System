@@ -8,10 +8,18 @@
 #include "header/kernel.h"
 
 int main() {
+    byte buffer[512];
+    struct file_metadata meta;
     makeInterrupt21();
     fillKernelMap();
-    shell();
-    
+    buffer[0] = 0xFF;
+    writeSector(buffer,0x104);
+
+    clearScreen();
+
+    meta.node_name    = "shell";
+    meta.parent_index = 0;
+    executeProgram(&meta, 0x2000);
     while (true);    
 }
 

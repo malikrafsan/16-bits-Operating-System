@@ -17,7 +17,7 @@ kernel: shell new_shell stdlib
 	bcc -ansi -c -o out/kernel.o src/c/kernel.c
 	nasm -f as86 src/asm/kernel.asm -o out/kernel_asm.o
 	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
-	ld86 -o out/kernel -d out/kernel.o out/kernel_asm.o out/lib_interrupt.o out/std_lib.o out/shell.o out/command.o out/shell_helper.o
+	ld86 -o out/kernel -d out/kernel.o out/kernel_asm.o out/lib_interrupt.o out/std_lib.o
 
 stdlib:
 	# Opsional
@@ -32,8 +32,12 @@ new_shell:
 	bcc -ansi -c -o out/user_shell.o src/c/user_program/shell.c
 	bcc -ansi -c -o out/textio.o src/c/lib/textio.c
 	bcc -ansi -c -o out/string.o src/c/lib/string.c
+	bcc -ansi -c -o out/sectorio.o src/c/lib/sectorio.c
+	bcc -ansi -c -o out/utils.o src/c/lib/utils.c
+	bcc -ansi -c -o out/program.o src/c/lib/program.c
 	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
-	ld86 -o out/shell -d out/user_shell.o out/lib_interrupt.o out/textio.o out/string.o
+	nasm -f as86 src/asm/utils.asm -o out/utils_asm.o
+	ld86 -o out/shell -d out/user_shell.o out/lib_interrupt.o out/textio.o out/string.o out/sectorio.o out/utils.o out/utils_asm.o out/program.o
 
 run:
 	echo "c" | bochs -f src/config/if2230.config
