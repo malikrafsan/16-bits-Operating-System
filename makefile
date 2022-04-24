@@ -1,5 +1,5 @@
 # Makefile
-all: diskimage bootloader shell stdlib kernel test
+all: diskimage bootloader shell new_shell stdlib kernel test
 
 # Recipes
 diskimage: bootloader kernel
@@ -12,11 +12,12 @@ bootloader:
 	# TODO : Tambahkan untuk pembuatan bootloader
 	nasm src/asm/bootloader.asm -o out/bootloader
 
-kernel: shell stdlib
+kernel: shell new_shell stdlib
 	# TODO : Tambahkan untuk pembuatan kernel
 	bcc -ansi -c -o out/kernel.o src/c/kernel.c
 	nasm -f as86 src/asm/kernel.asm -o out/kernel_asm.o
-	ld86 -o out/kernel -d out/kernel.o out/kernel_asm.o out/std_lib.o out/shell.o out/command.o out/shell_helper.o
+	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
+	ld86 -o out/kernel -d out/kernel.o out/kernel_asm.o out/lib_interrupt.o out/std_lib.o out/shell.o out/command.o out/shell_helper.o
 
 stdlib:
 	# Opsional
@@ -26,6 +27,13 @@ shell:
 	bcc -ansi -c -o out/shell_helper.o src/c/shell/shell_helper.c
 	bcc -ansi -c -o out/command.o src/c/shell/command.c 
 	bcc -ansi -c -o out/shell.o src/c/shell/shell.c 
+
+new_shell:
+	bcc -ansi -c -o out/user_shell.o src/c/user_program/shell.c
+	bcc -ansi -c -o out/textio.o src/c/lib/textio.c
+	bcc -ansi -c -o out/string.o src/c/lib/string.c
+	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
+	ld86 -o out/shell -d out/user_shell.o out/lib_interrupt.o out/textio.o out/string.o
 
 run:
 	echo "c" | bochs -f src/config/if2230.config

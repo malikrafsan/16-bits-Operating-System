@@ -66,6 +66,11 @@ void shell() {
       mv(current_dir, args[1], args[2]);
     } else if (strcmp(args[0], "cp") && argc == 3) {
       cp(current_dir, args[1], args[2]);
+    } else if (strcmp(args[0], "shell") && argc == 1) {
+      struct file_metadata meta;
+      meta.node_name    = "shell";
+      meta.parent_index = 0;
+      executeProgram(&meta, 0x2000);
     } else {
       print("Unknown command or wrong format\n");
     }
