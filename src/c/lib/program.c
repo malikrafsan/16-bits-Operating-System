@@ -13,7 +13,7 @@ void exit(byte cur_dir, int next_program_segment) {
     getMessage(&msg, next_program_segment);
     msg.current_directory = cur_dir;
     setMessage(&msg,next_program_segment);
-
+    // putsMsg(&msg);
     metadata.node_name = msg.name;
     if(msg.isLocalProgram) {
         metadata.parent_index = msg.current_directory;
