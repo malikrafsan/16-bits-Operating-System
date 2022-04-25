@@ -35,9 +35,10 @@ new_shell:
 	bcc -ansi -c -o out/sectorio.o src/c/lib/sectorio.c
 	bcc -ansi -c -o out/utils.o src/c/lib/utils.c
 	bcc -ansi -c -o out/program.o src/c/lib/program.c
+	bcc -ansi -c -o out/std_lib.o src/c/std_lib.c
 	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
 	nasm -f as86 src/asm/utils.asm -o out/utils_asm.o
-	ld86 -o out/shell -d out/user_shell.o out/lib_interrupt.o out/textio.o out/string.o out/sectorio.o out/utils.o out/utils_asm.o out/program.o
+	ld86 -o out/shell -d out/user_shell.o out/lib_interrupt.o out/textio.o out/string.o out/sectorio.o out/utils.o out/utils_asm.o out/program.o out/std_lib.o
 
 run:
 	echo "c" | bochs -f src/config/if2230.config

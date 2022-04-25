@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "shell_helper.h": "c"
+    "shell_helper.h": "c",
+    "utils.h": "c"
   }
 }

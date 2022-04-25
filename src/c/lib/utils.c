@@ -1,4 +1,5 @@
 #include "../header/utils.h"
+#include "../header/textio.h"
 
 void getMessage(struct message *msg, int program_segment) {
     int sector_number = (program_segment-0x1000)/0x1000 + 0x103; // nanti pake div
@@ -7,6 +8,9 @@ void getMessage(struct message *msg, int program_segment) {
 
 void getCurMessage(struct message *msg) {
     int cur_segment = getCurrentSegment();
+    puts("cur segment: ");
+    putsIntFlipped(cur_segment);
+    puts("\n");
     getMessage(msg,cur_segment);
 }
 

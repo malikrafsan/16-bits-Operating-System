@@ -15,7 +15,7 @@ struct message {
     char arg2[64];
     char arg3[64];
     int next_program_segment; // Dapat digunakan untuk bagian 3.5
-    char other[298];
+    char other[300];
 };
 
 void getMessage(struct message *msg, int program_segment);

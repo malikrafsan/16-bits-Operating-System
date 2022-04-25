@@ -16,9 +16,13 @@ int main() {
   struct message msg;
   byte curdir;
 
+  puts("sizeof struct message: ");
+  putsIntFlipped(sizeof(struct message));
+  puts("\n");
   puts("Halo dari shell user program!\r\n");
   while (1) {
     getCurMessage(&msg);
+    putsMsg(&msg);
     curdir = msg.current_directory;
 
     puts("OSThanos:"); 
