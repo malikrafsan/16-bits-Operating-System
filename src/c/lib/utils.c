@@ -1,5 +1,6 @@
 #include "../header/utils.h"
 #include "../header/textio.h"
+#include "../header/string.h"
 
 void getMessage(struct message *msg, int program_segment) {
     int sector_number = (program_segment-0x1000)/0x1000 + 0x103; // nanti pake div
@@ -16,15 +17,23 @@ void getCurMessage(struct message *msg) {
 
 void set_MultiMsg(char* input_buf, byte curdir) {
     int ctProgram;
-    char** cmd;
+    char cmd[16][64];
     int argc;
-    char** args[5];
-    int i;
+    char args[5][16][64];
+    int i, j;
     struct message msg;
-    char c[2];
+    char c[3];
 
     // split dari _;_
     ctProgram = splitStr(input_buf, cmd, ';');
+
+    // puts("\n===\n");
+    // for (i=0;i<ctProgram;i++) {
+    //     puts(cmd[i]);
+    //     puts("|\n");
+    // }
+    // puts("===\n");
+
     msg.current_directory = curdir;
     msg.isLocalProgram = false;
     strcpy(msg.name,"shell");
@@ -34,7 +43,17 @@ void set_MultiMsg(char* input_buf, byte curdir) {
     // split dengan " "
     for(i=0;i<ctProgram;i++) {
         argc = splitStr(cmd[i], args[i], ' ');
+
+        // puts("ARGC: ");
+        // putsIntFlipped(argc);
+        // puts("\n");
+        // for (j=0;j<argc; j++) {
+        //     puts(args[i][j]);
+        //     puts("|\n");
+        // }
+
         bounded_strcpy(c,args[i][0],2);
+        c[2] = '\0';
         if(strcmp(c,"./")) {
             msg.isLocalProgram = true;
             strcpy(msg.name, args[i][0]+2);

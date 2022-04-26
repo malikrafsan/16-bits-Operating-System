@@ -21,7 +21,7 @@ void strcat(char *dst, char *src);
 void clear(byte *ptr, unsigned int n);
 // Mengosongkan byte array yang memiliki panjang n
 
-int splitStr(char* str, char** res, char delimiter);
+int splitStr(char* str, char res[16][64], char delimiter);
 
 void clearStr(char* str);
 

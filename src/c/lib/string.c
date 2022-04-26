@@ -59,31 +59,99 @@ void clear(byte *ptr, unsigned int n) {
   }
 }
 
-int splitStr(char *str, char **res, char delimiter) {
+int splitStr(char *str, char res[16][64], char delimiter) {
   int i = 0;
   int j = 0;
   int k = 0;
+  int a = 0;
+  char out[2];
+
+  out[1] = '\0';
+
+  // puts("\n<>\n");
+  // puts(str);
+  // puts("\n");
 
   while(str[i]==delimiter) {
     i++;
   }
 
+  // puts("\n-----\n");
   while (str[i] != '\0') {
     if (str[i] == delimiter) {
       res[j][k] = '\0';
-      j++;
-      k = 0;
+      
       while(str[i]==delimiter) {
         i++;
+      }
+      if (str[i] != '\0') {
+        // puts("> ");
+        // out[0] = '0';
+        // puts(out);
+        // puts(" : ");
+        // puts(res[0]);
+        // puts("\n");
+        
+        // puts("> ");
+        // out[0] = '1';
+        // puts(out);
+        // puts(" : ");
+        // puts(res[1]);
+        // puts("\n");
+
+        // puts("> ");
+        // out[0] = '2';
+        // puts(out);
+        // puts(" : ");
+        // puts(res[2]);
+        // puts("\n");
+
+        j++;
+        k = 0;
       }
       i--;
     } else {
       res[j][k] = str[i];
       k++;
+      // out[0] = str[i];
+      // puts(out);
     }
     i++;
   }
   res[j][k] = '\0';
+  // puts("> ");
+  // out[0] = '0';
+  // puts(out);
+  // puts(" : ");
+  // puts(res[0]);
+  // puts("\n");
+
+  // puts("> ");
+  // out[0] = '1';
+  // puts(out);
+  // puts(" : ");
+  // puts(res[1]);
+  // puts("\n");
+
+  // puts("> ");
+  // out[0] = '2';
+  // puts(out);
+  // puts(" : ");
+  // puts(res[2]);
+  // puts("\n");
+  
+  // puts("-----\n");
+
+  puts("<>\n");
+  for (a=0; a<j+1; a++) {
+    puts("{");
+    out[0] = a + '0';
+    puts(out);
+    puts(" : ");
+    puts(res[a]);
+    puts("}\n");
+  }
+  puts("<>\n");
 
   return j + 1;
 }
