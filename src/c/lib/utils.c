@@ -68,7 +68,6 @@ void set_MultiMsg(char* input_buf, byte curdir) {
             msg.next_program_segment = 0x4000+i*0x1000;
         }
         setMessage(&msg, 0x3000+i*0x1000);
-        putsMsg(&msg);
     }
 }
 

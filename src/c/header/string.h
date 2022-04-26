@@ -23,4 +23,6 @@ void clear(byte *ptr, unsigned int n);
 
 int splitStr(char* str, char** res, char delimiter);
 
+void clearStr(char* str);
+
 #endif

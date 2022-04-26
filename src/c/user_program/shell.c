@@ -16,13 +16,13 @@ int main() {
   struct message msg;
   byte curdir;
 
-  puts("sizeof struct message: ");
-  putsIntFlipped(sizeof(struct message));
-  puts("\n");
-  puts("Halo dari shell user program!\r\n");
+  // puts("sizeof struct message: ");
+  // putsIntFlipped(sizeof(struct message));
+  // puts("\n");
+  // puts("Halo dari shell user program!\r\n");
   while (1) {
     getCurMessage(&msg);
-    putsMsg(&msg);
+    // putsMsg(&msg);
     curdir = msg.current_directory;
 
     puts("OSThanos:"); 
@@ -33,21 +33,6 @@ int main() {
     set_MultiMsg(input_buf, curdir);
     getCurMessage(&msg);
     exit(curdir, msg.next_program_segment);
-
-    // argc = splitStr(input_buf, args, ' ');
-
-    // if (strcmp(args[0], "cd")) {
-    //   puts("USE COMMAND CD\n");
-    // } else if (strcmp(args[0], "ls")) {
-    //   puts("USE COMMAND LS\n");
-    // } else if (strcmp(args[0], "mkdir")) {
-    //   puts("USE COMMAND MKDIR\n");
-    // } else if (strcmp(args[0], "exit")) {
-    //   puts("USE COMMAND EXIT\n");
-    // } else {
-    //   puts(input_buf);
-    //   puts("\nUNKNOWN COMMAND\n");
-    // }
   }
 }
 

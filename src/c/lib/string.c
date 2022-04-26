@@ -87,3 +87,10 @@ int splitStr(char *str, char **res, char delimiter) {
 
   return j + 1;
 }
+
+void clearStr(char* str) {
+  int i;
+  for (i = 0; str[i] != '\0'; i++) {
+    str[i] = '\0';
+  }
+}
