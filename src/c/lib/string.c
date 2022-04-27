@@ -142,16 +142,16 @@ int splitStr(char *str, char res[16][64], char delimiter) {
   
   // puts("-----\n");
 
-  puts("<>\n");
-  for (a=0; a<j+1; a++) {
-    puts("{");
-    out[0] = a + '0';
-    puts(out);
-    puts(" : ");
-    puts(res[a]);
-    puts("}\n");
-  }
-  puts("<>\n");
+  // puts("<>\n");
+  // for (a=0; a<j+1; a++) {
+  //   puts("{");
+  //   out[0] = a + '0';
+  //   puts(out);
+  //   puts(" : ");
+  //   puts(res[a]);
+  //   puts("}\n");
+  // }
+  // puts("<>\n");
 
   return j + 1;
 }

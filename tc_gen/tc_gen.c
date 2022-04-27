@@ -71,6 +71,7 @@ void tc_Shell(byte buf[2880][512]) {
     create_folder(buf, "bin", 0xFF);
     insert_file(buf, "shell", 0);
     insert_file(buf, "ls", 0);
+    insert_file(buf, "mkdir", 0);
 }
 
 int main(int argc, char const *argv[]) {

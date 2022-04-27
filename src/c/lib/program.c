@@ -3,9 +3,9 @@
 extern int interrupt(int int_number, int AX, int BX, int CX, int DX);
 
 void exec(struct file_metadata *metadata, int segment) {
-    puts("EXECUTE PROGRAM WITH SEGMENT: ");
-    putsIntFlipped(segment);
-    puts("\n");
+    // puts("EXECUTE PROGRAM WITH SEGMENT: ");
+    // putsIntFlipped(segment);
+    // puts("\n");
     
     interrupt(0x21,0x6,metadata,segment,0);
 }

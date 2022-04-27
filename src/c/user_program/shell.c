@@ -25,6 +25,9 @@ int main() {
     // putsMsg(&msg);
     curdir = msg.current_directory;
 
+    puts("curdir: ");
+    putsIntFlipped(curdir);
+    puts("\n");
     puts("OSThanos:"); 
     cwd(curdir);
     puts("$? ");

@@ -18,12 +18,12 @@ byte getIdxByPath(byte cur_dir, char* path, bool *success) {
   interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
 
   // for (it = 0; it < argc; it++) {
-  //   printHex(it);
-  //   print(". ");
-  //   print(args[it]);
-  //   print("\n");
+  //   putsHex(it);
+  //   puts(". ");
+  //   puts(args[it]);
+  //   puts("\n");
   // }
-  // print("\n");
+  // puts("\n");
   *success = true;
   while(path[i1]!='\0') {
     n = 0;
@@ -38,8 +38,8 @@ byte getIdxByPath(byte cur_dir, char* path, bool *success) {
     path[i1+n] = c;
 
     flag = false;
-    // print(args[it]);
-    // print(" -> ");
+    // puts(args[it]);
+    // puts(" -> ");
     if (strcmp(name, "..")) {
       if(cur_dir != FS_NODE_P_IDX_ROOT) {
         cur_dir = buffer[cur_dir * 16];
@@ -51,7 +51,7 @@ byte getIdxByPath(byte cur_dir, char* path, bool *success) {
       for (i = 0; i < 64; i++) {
         if (buffer[i * 16] == cur_dir &&
             strcmp(buffer + i * 16 + 2, name)) {
-          // print("FOUND");
+          // puts("FOUND");
           cur_dir = i;
           flag = true;
           break;
@@ -73,4 +73,33 @@ byte getIdxByPath(byte cur_dir, char* path, bool *success) {
   clearStr(buffer);
 
   return cur_dir;
+}
+
+void puts_fs_retcode(enum fs_retcode return_code) {
+  switch (return_code) {
+  case FS_SUCCESS:
+    puts("Success\n");
+    break;
+  case FS_R_NODE_NOT_FOUND:
+    puts("Not found\n");
+    break;
+  case FS_R_TYPE_IS_FOLDER:
+    puts("Type is folder\n");
+    break;
+  case FS_W_FILE_ALREADY_EXIST:
+    puts("Already exist\n");
+    break;
+  case FS_W_NOT_ENOUGH_STORAGE:
+    puts("Not enough\n");
+    break;
+  case FS_W_MAXIMUM_NODE_ENTRY:
+    puts("Max node entry\n");
+    break;
+  case FS_W_MAXIMUM_SECTOR_ENTRY:
+    puts("Max sector entry\n");
+    break;
+  case FS_W_INVALID_FOLDER:
+    puts("Invalid folder\n");
+    break;
+  }
 }
