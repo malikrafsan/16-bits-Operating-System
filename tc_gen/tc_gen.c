@@ -18,9 +18,9 @@ void tc_A(byte buf[2880][512]) {
     create_folder(buf, "folder1", 0xFF);
     create_folder(buf, "folder2", 0);
     create_folder(buf, "folder3", 0);
-    insert_file(buf, "file_src/tc_a/hehe", 2);
-    insert_file(buf, "file_src/tc_a/haha", 2);
-    insert_file(buf, "file_src/tc_a/hoho", 2);
+    insert_file(buf, "file_src/tc_a/hehe", 0xFF);
+    insert_file(buf, "file_src/tc_a/haha", 0xFF);
+    insert_file(buf, "file_src/tc_a/hoho", 0xFF);
     create_folder(buf, "folder4", 0);
     create_folder(buf, "folder5", 6);
     insert_file(buf, "file_src/tc_a/keos", 6);
@@ -69,9 +69,18 @@ void tc_D(byte buf[2880][512]) {
 
 void tc_Shell(byte buf[2880][512]) {
     create_folder(buf, "bin", 0xFF);
+    create_folder(buf, "folder1", 0xFF);
     insert_file(buf, "shell", 0);
     insert_file(buf, "ls", 0);
     insert_file(buf, "mkdir", 0);
+    insert_file(buf, "cat", 0);
+    
+    insert_file(buf, "file_src/tc_a/hehe", 0xFF);
+    insert_file(buf, "file_src/tc_a/haha", 0xFF);
+    insert_file(buf, "file_src/tc_a/hoho", 0xFF);
+    insert_file(buf, "file_src/tc_a/file3", 1);
+    insert_file(buf, "file_src/tc_a/file1", 1);
+    insert_file(buf, "file_src/tc_a/file2", 1);
 }
 
 int main(int argc, char const *argv[]) {
