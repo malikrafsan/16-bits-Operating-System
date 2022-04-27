@@ -24,6 +24,7 @@ int main() {
   puts("\n");
 
   success = true;
+  temp = curdir;
   if (msg.arg1[0] != '\0') {
     temp = getIdxByPath(curdir, msg.arg1, &success);
   }
@@ -58,8 +59,6 @@ int main() {
   }
   if (isEmpty) {
     puts("Empty directory\n");
-  } else {
-    puts("NOT EMPTY\n");
   }
   clearStr(buffer);
 
