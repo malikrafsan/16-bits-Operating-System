@@ -2,6 +2,7 @@
   "files.associations": {
     "shell_helper.h": "c",
     "utils.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "filesystem.h": "c"
   }
 }

@@ -42,12 +42,15 @@ int main() {
 void cwd(byte cur_dir) {
   char buffer[1024];
   char temp[16];
-  char* cur_name = "";
+  char cur_name[128];
   byte child[64];
   byte u;
 
+  cur_name[0] = '\0';
+
   if (cur_dir == FS_NODE_P_IDX_ROOT) {
     puts("/");
+    return;
   } else {
     readSectorLib(buffer,FS_NODE_SECTOR_NUMBER);
     readSectorLib(buffer+512, FS_NODE_SECTOR_NUMBER+1);
