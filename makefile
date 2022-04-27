@@ -1,5 +1,5 @@
 # Makefile
-all: diskimage bootloader shell new_shell ls mkdir cat cd stdlib kernel test
+all: diskimage bootloader shell new_shell ls mkdir cat cd mv stdlib kernel test
 
 # Recipes
 diskimage: bootloader kernel
@@ -64,6 +64,12 @@ cd: new_shell
 	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
 	nasm -f as86 src/asm/utils.asm -o out/utils_asm.o
 	ld86 -o out/cd -d out/cd.o out/textio.o out/utils.o out/program.o out/std_lib.o out/lib_interrupt.o out/utils_asm.o out/sectorio.o out/string.o out/shell_lib.o
+
+mv: new_shell
+	bcc -ansi -c -o out/mv.o src/c/user_program/mv.c
+	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
+	nasm -f as86 src/asm/utils.asm -o out/utils_asm.o
+	ld86 -o out/mv -d out/mv.o out/textio.o out/utils.o out/program.o out/std_lib.o out/lib_interrupt.o out/utils_asm.o out/sectorio.o out/string.o out/shell_lib.o
 
 run:
 	echo "c" | bochs -f src/config/if2230.config

@@ -75,6 +75,7 @@ void tc_Shell(byte buf[2880][512]) {
     insert_file(buf, "mkdir", 0);
     insert_file(buf, "cat", 0);
     insert_file(buf, "cd", 0);
+    insert_file(buf, "mv", 0);
 
     insert_file(buf, "file_src/tc_a/hehe", 0xFF);
     insert_file(buf, "file_src/tc_a/haha", 0xFF);

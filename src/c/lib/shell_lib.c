@@ -103,3 +103,33 @@ void puts_fs_retcode(enum fs_retcode return_code) {
     break;
   }
 }
+
+bool getParentPath(char *child, char *parent) {
+  int idxLastSlash, i;
+
+  strcpy(parent, child);
+
+  idxLastSlash = -1;
+  for (i = 0; parent[i] != '\0' ; i++) {
+    if (parent[i] == '/') {
+      idxLastSlash = i;
+    }
+  }
+
+  if (idxLastSlash == -1) {
+    // parent = "/";
+    return false;
+  } else if(idxLastSlash==0) {
+    idxLastSlash = 1;
+  } //root
+
+  while (1) {
+    if (parent[idxLastSlash] == '\0') {
+      break;
+    }
+    parent[idxLastSlash] = '\0';
+    idxLastSlash++;
+  }
+
+  return true;
+}
