@@ -9,4 +9,6 @@ void puts_fs_retcode(enum fs_retcode return_code);
 
 bool getParentPath(char *child, char *parent);
 
+void deleteFile(byte cur_dir, char* filename);
+
 #endif /* __SHELL_LIB_H__ */
