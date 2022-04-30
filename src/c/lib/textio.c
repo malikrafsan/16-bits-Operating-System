@@ -62,3 +62,57 @@ int putsMsg(struct message *msg) {
   puts("\n");
   return 0;
 }
+
+void puts_fs_retcode(enum fs_retcode return_code) {
+  switch (return_code) {
+  case FS_SUCCESS:
+    puts("Success\n");
+    break;
+  case FS_R_NODE_NOT_FOUND:
+    puts("Not found\n");
+    break;
+  case FS_R_TYPE_IS_FOLDER:
+    puts("Type is folder\n");
+    break;
+  case FS_W_FILE_ALREADY_EXIST:
+    puts("Already exist\n");
+    break;
+  case FS_W_NOT_ENOUGH_STORAGE:
+    puts("Not enough\n");
+    break;
+  case FS_W_MAXIMUM_NODE_ENTRY:
+    puts("Max node entry\n");
+    break;
+  case FS_W_MAXIMUM_SECTOR_ENTRY:
+    puts("Max sector entry\n");
+    break;
+  case FS_W_INVALID_FOLDER:
+    puts("Invalid folder\n");
+    break;
+  }
+}
+
+void putsHex(byte b) {
+  char str[3];
+  byte temp;
+
+  puts("0x");
+  temp = div(b, 16);
+  str[0] = temp > 9 ? temp + 55 : temp + 48;
+
+  temp = mod(b, 16);
+  str[1] = temp > 9 ? temp + 55 : temp + 48;
+  str[2] = '\0';
+  puts(str);
+}
+
+void printHeader() {
+  char *string = "Tugas Besar OS Thanos\n";
+  // int i = 0;
+
+  puts(string);
+  // for (i = 0; i < strlen(string); i++) {
+  //   byte warna = 0xCF;
+  //   putInMemory(0xB000, 0x8001 + 2 * i, warna);
+  // }
+}

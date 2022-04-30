@@ -3,9 +3,9 @@
 
 #include "../header/filesystem.h"
 
-void readFile(struct file_metadata *metadata, enum fs_retcode *return_code);
+int readLib(struct file_metadata *metadata, enum fs_retcode *return_code);
 
-void writeLib(struct file_metadata *metadata, enum fs_retcode *return_code);
+int writeLib(struct file_metadata *metadata, enum fs_retcode *return_code);
 
 void deleteFile(byte cur_dir, char* filename);
 

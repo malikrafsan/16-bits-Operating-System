@@ -12,8 +12,10 @@ int putsIntFlipped(int x);
 
 int putsMsg(struct message* msg);
 
-void print_fs_retcode(enum fs_retcode return_code);
+void puts_fs_retcode(enum fs_retcode return_code);
 
-void printHex(byte b);
+void putsHex(byte b);
+
+void printHeader();
 
 #endif /* __TEXT_IO_H__ */

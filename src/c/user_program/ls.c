@@ -2,7 +2,7 @@
 #include "../header/textio.h"
 #include "../header/program.h"
 #include "../header/string.h"
-#include "../header/shell_lib.h"
+#include "../header/fileio.h"
 
 int main() {
   struct message msg;
@@ -35,8 +35,10 @@ int main() {
     return 0;
   }
 
-  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
-  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  // interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  // interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  readSectorLib(buffer, FS_NODE_SECTOR_NUMBER);
+  readSectorLib(buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
 
   isEmpty = true;
   for (i = 0; i < 64; i++) {

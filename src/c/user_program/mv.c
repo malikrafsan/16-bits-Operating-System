@@ -2,7 +2,7 @@
 #include "../header/textio.h"
 #include "../header/program.h"
 #include "../header/string.h"
-#include "../header/shell_lib.h"
+#include "../header/fileio.h"
 
 int main() {
   struct message msg;
@@ -40,8 +40,10 @@ int main() {
     return 0;
   }
 
-  interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
-  interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  // interrupt(0x21, 0x2, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  // interrupt(0x21, 0x2, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  readSectorLib(buffer, FS_NODE_SECTOR_NUMBER);
+  readSectorLib(buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
 
   success_get_parent = getParentPath(path_dest, parent_dest);
 
@@ -70,8 +72,10 @@ int main() {
 
   buffer[idx_src * 16] = idx_parent_dest;
 
-  interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
-  interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  // interrupt(0x21, 0x3, buffer, FS_NODE_SECTOR_NUMBER, 0);
+  // interrupt(0x21, 0x3, buffer + 512, FS_NODE_SECTOR_NUMBER + 1, 0);
+  writeSectorLib(buffer, FS_NODE_SECTOR_NUMBER);
+  writeSectorLib(buffer + 512, FS_NODE_SECTOR_NUMBER + 1);
 
   exit(msg.current_directory, msg.next_program_segment);
   return 0;

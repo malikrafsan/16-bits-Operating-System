@@ -6,7 +6,7 @@
 #include "std_type.h"
 #include "std_lib.h"
 #include "filesystem.h"
-#include "shell_lib.h"
+#include "fileio.h"
 
 // Fungsi bawaan
 extern void putInMemory(int segment, int address, byte b);

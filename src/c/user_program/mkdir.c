@@ -2,7 +2,7 @@
 #include "../header/textio.h"
 #include "../header/program.h"
 #include "../header/string.h"
-#include "../header/shell_lib.h"
+#include "../header/fileio.h"
 
 int main() {
   struct message msg;
@@ -26,7 +26,8 @@ int main() {
   metadata.parent_index = curdir;
   metadata.filesize = 0;
 
-  interrupt(0x21, 0x5, &metadata, &return_code, 0);
+  // interrupt(0x21, 0x5, &metadata, &return_code, 0);
+  writeLib(&metadata, &return_code);
   puts_fs_retcode(return_code);
 
   exit(curdir, msg.next_program_segment);

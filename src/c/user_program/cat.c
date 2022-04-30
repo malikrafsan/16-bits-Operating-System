@@ -2,7 +2,7 @@
 #include "../header/textio.h"
 #include "../header/program.h"
 #include "../header/string.h"
-#include "../header/shell_lib.h"
+#include "../header/fileio.h"
 
 int main() {
   struct message msg;
@@ -16,7 +16,8 @@ int main() {
   metadata.node_name = msg.arg1;
   metadata.parent_index = msg.current_directory;
 
-  interrupt(0x21, 0x4, &metadata, &return_code, 0);
+  // interrupt(0x21, 0x4, &metadata, &return_code, 0);
+  readLib(&metadata, &return_code);
   
   if(return_code==FS_SUCCESS) {
     puts(metadata.buffer);
