@@ -77,10 +77,3 @@ void cwd(byte cur_dir) {
   puts(cur_name);
   clearStr(cur_name);
 }
-
-void clearStr(char* str) {
-  int i;
-  for (i = 0; str[i] != '\0'; i++) {
-    str[i] = '\0';
-  }
-}

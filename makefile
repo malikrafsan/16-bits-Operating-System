@@ -1,8 +1,8 @@
 # Makefile
-all: diskimage bootloader shell new_shell ls mkdir cat cd mv cp stdlib kernel test
+all: diskimage bootloader new_shell ls mkdir cat cd mv cp stdlib kernel test
 
 # Recipes
-diskimage: bootloader kernel test
+diskimage: bootloader kernel test ls mkdir cat cd mv cp
 	# TODO : Tambahkan untuk pembuatan image
 	dd if=/dev/zero of=out/system.img bs=512 count=2880
 	dd if=out/bootloader of=out/system.img bs=512 count=1 conv=notrunc
@@ -13,8 +13,8 @@ bootloader:
 	# TODO : Tambahkan untuk pembuatan bootloader
 	nasm src/asm/bootloader.asm -o out/bootloader
 
-kernel: shell new_shell stdlib
-	# TODO : Tambahkan untuk pembuatan kernel
+kernel: new_shell stdlib
+# TODO : Tambahkan untuk pembuatan kernel
 	bcc -ansi -c -o out/kernel.o src/c/kernel.c
 	nasm -f as86 src/asm/kernel.asm -o out/kernel_asm.o
 	nasm -f as86 src/asm/interrupt.asm -o out/lib_interrupt.o
@@ -23,11 +23,6 @@ kernel: shell new_shell stdlib
 stdlib:
 	# Opsional
 	bcc -ansi -c -o out/std_lib.o src/c/std_lib.c
-
-shell:
-	bcc -ansi -c -o out/shell_helper.o src/c/shell/shell_helper.c
-	bcc -ansi -c -o out/command.o src/c/shell/command.c 
-	bcc -ansi -c -o out/shell.o src/c/shell/shell.c 
 
 new_shell:
 	bcc -ansi -c -o out/user_shell.o src/c/user_program/shell.c
