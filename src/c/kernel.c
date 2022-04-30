@@ -4,12 +4,12 @@
 
 // TODO : Tambahkan implementasi kode C
 
-#include "header/shell.h"
 #include "header/kernel.h"
 
 int main() {
     byte buffer[512];
     struct file_metadata meta;
+    bool success;
     makeInterrupt21();
     fillKernelMap();
     buffer[0] = 0xFF;
@@ -18,7 +18,7 @@ int main() {
     clearScreen();
 
     meta.node_name    = "shell";
-    meta.parent_index = 0;
+    meta.parent_index = getIdxByPath(0xFF,"/bin",&success);
     executeProgram(&meta, 0x2000);
     while (true);    
 }
@@ -380,6 +380,8 @@ void executeProgram(struct file_metadata *metadata, int segment) {
     }
     launchProgram(segment);
   }
-  else
+  else {
     printString("exec: file not found\r\n");
+    launchProgram(0x2000);
+  }
 }
