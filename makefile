@@ -2,11 +2,12 @@
 all: diskimage bootloader shell new_shell ls mkdir cat cd mv cp stdlib kernel test
 
 # Recipes
-diskimage: bootloader kernel
+diskimage: bootloader kernel test
 	# TODO : Tambahkan untuk pembuatan image
 	dd if=/dev/zero of=out/system.img bs=512 count=2880
 	dd if=out/bootloader of=out/system.img bs=512 count=1 conv=notrunc
 	dd if=out/kernel of=out/system.img bs=512 conv=notrunc seek=1
+	cd out ; ./tc_gen S ; cd ..
 
 bootloader:
 	# TODO : Tambahkan untuk pembuatan bootloader

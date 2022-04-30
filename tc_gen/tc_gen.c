@@ -13,6 +13,14 @@ extern void insert_file(byte buf[2880][512], char *fname, byte parent_idx);
 extern void create_folder(byte buf[2880][512], char *fname, byte parent_idx);
 
 
+void fillMap(byte buf[2880][512]) {
+    for(int i=0;i<=15;i++) {
+        buf[256][i] = 0x1;
+    }
+    for(int i=256;i<=511;i++) {
+        buf[256][i] = 0x1;
+    }
+}
 
 void tc_A(byte buf[2880][512]) {
     create_folder(buf, "folder1", 0xFF);
@@ -107,6 +115,8 @@ int main(int argc, char const *argv[]) {
     // Close file descriptor and overwrite
     fclose(image);
     image = fopen(NAMA_IMAGE, "wb");
+
+    fillMap(imagebuffer);
 
     switch (argv[1][0]) {
         case 'A':
