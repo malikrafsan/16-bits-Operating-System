@@ -1,5 +1,7 @@
 #include "../header/shell_lib.h"
 #include "../header/filesystem.h"
+#include "../header/textio.h"
+#include "../header/string.h"
 
 byte getIdxByPath(byte cur_dir, char* path, bool *success) {
   char buffer[1024];
